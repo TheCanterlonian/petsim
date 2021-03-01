@@ -42,6 +42,7 @@ namespace petsim2
     10. a gui for each: linux, windows, and mobile
     11. a background processor for the gui
     12. credits/about box (both console and gui readable)
+    13. allow the program to take arguments (to activate the GUI or CLI intantly)
     */
 }
 /*
