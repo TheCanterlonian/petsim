@@ -21,6 +21,17 @@ namespace petsim2
         //program entry point
         public static void Main(string[] args)
         {
+            //these could be improved upon
+            //see if the user wants to start the CLI instantly
+            if (args.Contains("c"))
+            {
+                //start the CLI now
+            }
+            //see if user wants to start the GUI instantly
+            if (args.Contains("g"))
+            {
+                //start the GUI now
+            }
             //testing stuff (change this for release)
             //
         }
