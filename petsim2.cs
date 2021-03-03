@@ -1,5 +1,6 @@
 ﻿//petsim2 by Tiffany Erika Darling (that's right, legal name change motherfuckers!)
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,7 +10,9 @@ using System.Threading;
 using System.Reflection;
 using System.Data;
 using System.Xml;
+using System.Runtime.InteropServices;
 using Gtk;
+using Xamarin; //using Xamarin.Forms; is more useful but conflicts with GTK (how do i pronounce Xamarin btw? i've been saying /xæ mɐ ɾɪn/ myself)
 /*
 digital pet simulator 2 (1 lost a lot of work so i decided to rewrite it all from scratch)
 */
@@ -35,11 +38,14 @@ namespace petsim2
             //see if user wants to start the GUI instantly
             if (args.Contains("g"))
             {
+                //preload (check what OS we're working on)
                 //start the GUI now
             }
             /*
             testing stuff, (change this for release,) put tests below here
             */
+            string os = petsimGraphicalTools.PreGraphicalOperations.OperatingSystemChecker();
+            Console.WriteLine(os);
         }
     }
     /*
@@ -436,7 +442,36 @@ namespace petsimGraphicalTools
     //class for functions used before running the GUI (used as preparations)
     public class PreGraphicalOperations
     {
-        //
+        //OS checker
+        public static string OperatingSystemChecker()
+        {
+            //check for Linux
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                return("Linux");
+            }
+            //check for Windows
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                return("Windows");
+            }
+            //check for BSD
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.FreeBSD))
+            {
+                return("FreeBSD");
+            }
+            //check for MacOS
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            {
+                return("MacOSX");
+            }
+            //if running on none of those
+            else
+            {
+                //return mobile
+                return("mobile");
+            }
+        }
     }
     //class for tools relating to the use of GTK (for Linux users)
     public class petsimGTKtools

@@ -8,6 +8,8 @@
   <ItemGroup>
     <PackageReference Include="Discord.Net" Version="2.2.0" />
     <PackageReference Include="GtkSharp" Version="3.22.25.128" />
+    <PackageReference Include="System.Runtime.InteropServices" Version="4.3.0" />
+    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2012+671-sha.68c17772d-azdo.4465181" />
   </ItemGroup>
 
 </Project>
