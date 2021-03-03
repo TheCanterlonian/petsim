@@ -37,12 +37,9 @@ namespace petsim2
             {
                 //start the GUI now
             }
-            //testing stuff (change this for release)
-            //
-            string[] options = new string[] { "hello", "hi", "2", "3", "4", "5" };
-            Console.WriteLine("a");
-            petsimConsoleTools.ConsoleOutputGiving.menuCreator(options);
-            Console.WriteLine("a");
+            /*
+            testing stuff, (change this for release,) put tests below here
+            */
         }
     }
     /*
@@ -53,7 +50,7 @@ namespace petsim2
     1. a method for finding out if a string is one of a group of strings to replace inline illegal filename checks but also for more general tasks too
     2. a method for creating new save files
     3. a method for loading save files
-    4. a method for console menu creation (outputing menu titles AND options)
+    4. perfect the console menu creator (petsimConsoleTools.ConsoleOutputGiving.menuCreator(string[]);) it currently ASSUMES element 0 exists
     5. a method for loading save data
     6. a class for reading data from the filesystem and the internet (including default data from default filles)
     7. a class for runtime stuff
@@ -95,17 +92,17 @@ namespace petsimGeneralTools
             return true;
         }
     }
-    //class for  high level data processing tools (listed in alphabetical order)
+    //class for  high level data processing tools
     public class DataProcessingToolsHigh
     {
         //
     }
-    //class for  low level data processing tools (listed in alphabetical order)
+    //class for  low level data processing tools
     public class DataProcessingToolsLow
     {
         //
     }
-    //class for filesystem editing (listed from most creative to most destructive)
+    //class for filesystem editing
     public class FilesystemEditingAndAltering
     {
         //Profile Data Creator
@@ -184,11 +181,12 @@ namespace petsimGeneralTools
     //class for processing tasks performed asynchronously
     public class AsynchronousProcessingTasks
     {
+        /*
         //main async threading method
         public async Task MainAsync()
         {
             //do asynchronous stuff
-            //await Task.Run();
+            await Task.Run();
             //block the async main method from returning until after the application is exited
             await Task.Delay(-1);
         }
@@ -199,8 +197,9 @@ namespace petsimGeneralTools
             message = message.TrimStart();
             message = message.TrimEnd();
             //do stuff with the message
-            //await Task.Run();
+            await Task.Run();
         }
+        */
     }
 }
 /*
@@ -208,7 +207,7 @@ The classes below are tools and utilities for the console interface.
 */
 namespace petsimConsoleTools
 {
-    //class for giving outputs to the console (listed from most general to most situational)
+    //class for giving outputs to the console
     public class ConsoleOutputGiving
     {
         //menu creator
@@ -243,7 +242,7 @@ namespace petsimConsoleTools
             Console.Write("\n");
         }
     }
-    //class for grabbing higher level inputs on the console (listed from most abstracted to least abstracted)
+    //class for grabbing higher level inputs on the console
     public class ConsoleInputGrabbingHigh
     {
         //filename handler
@@ -306,7 +305,7 @@ namespace petsimConsoleTools
             return ("error");
         }
     }
-    //class for grabbing low level inputs on the console (listed from most complicated input to least complicated input)
+    //class for grabbing low level inputs on the console
     public class ConsoleInputGrabbingLow
     {
         //string input handler
@@ -466,7 +465,7 @@ namespace petsimGraphicalTools
             Application.Run();
         }
     }
-    //class for handlers of GUI events
+    //class for handlers of GTK events (for Linux users)
     public class petsimGTKeventHandlers
     {
         //
