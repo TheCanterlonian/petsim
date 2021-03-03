@@ -21,7 +21,12 @@ namespace petsim2
         //program entry point
         public static void Main(string[] args)
         {
-            //these could be improved upon
+            //for every argument
+            for (int i = 0; i < args.Length; i++)
+            {
+                //make the argument lowercase
+                args[i] = args[i].ToLower();
+            }
             //see if the user wants to start the CLI instantly
             if (args.Contains("c"))
             {
@@ -34,6 +39,10 @@ namespace petsim2
             }
             //testing stuff (change this for release)
             //
+            string[] options = new string[] { "hello", "hi", "2", "3", "4", "5" };
+            Console.WriteLine("a");
+            petsimConsoleTools.ConsoleOutputGiving.menuCreator(options);
+            Console.WriteLine("a");
         }
     }
     /*
@@ -54,6 +63,7 @@ namespace petsim2
     11. a background processor for the gui
     12. credits/about box (both console and gui readable)
     13. allow the program to take arguments (to activate the GUI or CLI intantly)
+    14. async stuff to run the game while the interface is open
     */
 }
 /*
@@ -201,7 +211,37 @@ namespace petsimConsoleTools
     //class for giving outputs to the console (listed from most general to most situational)
     public class ConsoleOutputGiving
     {
-        //
+        //menu creator
+        public static void menuCreator(string[] linesForMenu)
+        {
+            /*
+            this method uses element zero of the input as the menu title.
+            it assumes element 0 is always used.
+            try to fix this later since this is a very very very very very very very very very very BAD IDEA!!!!!!!!!!!!
+            */
+            //for the length of the first element
+            for (int i = 0; i < linesForMenu[0].Length; i++)
+            {
+                //write the top bar
+                Console.Write("=");
+            }
+            Console.Write("\n");
+            Console.WriteLine(linesForMenu[0]);
+            //for the length of the first element
+            for (int i = 0; i < linesForMenu[0].Length; i++)
+            {
+                //write the bottom bar
+                Console.Write("-");
+            }
+            Console.Write("\n");
+            //for every menu option
+            for (int i = 1; i <= linesForMenu[0].Length; i++)
+            {
+                //write the menu option
+                Console.WriteLine(linesForMenu[i]);
+            }
+            Console.Write("\n");
+        }
     }
     //class for grabbing higher level inputs on the console (listed from most abstracted to least abstracted)
     public class ConsoleInputGrabbingHigh
