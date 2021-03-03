@@ -61,11 +61,12 @@ namespace petsim2
     7. a class for runtime stuff
     8. a class for console interaction (high level in & out)
     9. a function to check what OS we are running on and decide which version of the GUI to run
-    10. a gui for each: linux, windows, and mobile
+    10. a gui for each: desktop and mobile
     11. a background processor for the gui
     12. credits/about box (both console and gui readable)
     13. allow the program to take arguments (to activate the GUI or CLI intantly)
     14. async stuff to run the game while the interface is open
+    15. pay a Xamarin developer to make a GUI for me
     */
 }
 /*
@@ -222,6 +223,7 @@ namespace petsimConsoleTools
             this method uses element zero of the input as the menu title.
             it assumes element 0 is always used.
             try to fix this later since this is a very very very very very very very very very very BAD IDEA!!!!!!!!!!!!
+            can't be fucked at the moment though... (famous last words)
             */
             //for the length of the first element
             for (int i = 0; i < linesForMenu[0].Length; i++)
@@ -489,6 +491,11 @@ namespace petsimGraphicalTools
             }
         }
     }
+    //class for graphical tools usable by both GTK and Xamarin
+    public class petsimIndependentTools
+    {
+        //
+    }
     //class for tools relating to the use of GTK (for desktop users)
     public class petsimGTKtools
     {
@@ -515,6 +522,8 @@ namespace petsimGraphicalTools
             mainWindow.ShowAll();
             //run the application
             Application.Run();
+            //when the form exits
+            return;
         }
     }
     //class for handlers of GTK events (for desktop users)
@@ -522,6 +531,19 @@ namespace petsimGraphicalTools
     {
         //
     }
+    /*
+    Everything below here is Xamarin, I made a template to get started but I don't know shit about Xamarin.
+    I also can't install stuff or emulate stuff just yet so I really can't check your work until release starts.
+    Xamarin programmer: you have free reign to do what you want below here as long as it doesn't violate users' rights.
+    You can use the GTK appearance to see how the desktop version looks if you want to.
+    Our primary target is Android, iOS is secondary but still important, all other mobile OSes can be ignored entirely.
+    Please try to document your code, I know I comment a little more than necessary so you don't have to do it as much as I do,
+    but please don't write entire methods without commenting what they do.
+    Disk space is not an issue, you can use as much of it as you like for the time being.
+    Unfortunetely "using Xamarin.Forms;" interferes with "using Gtk;" so I added "using Xamarin;" instead.
+    You will have to put "Forms." before all "Xamarin.Forms" calls.
+    If you know another way around this, let me know at some point on discord.
+    */
     //class for tools relating to the use of Xamarin (for mobile users)
     public class petsimXamarinTools
     {
@@ -530,7 +552,16 @@ namespace petsimGraphicalTools
     //class for the runtime relating to the use of Xamarin (for mobile users)
     public class petsimXamarinRuntime
     {
-        //
+        //Xamarin GUI screen startup method
+        public static void petsimXamarinStartup()
+        {
+            //TODO: find someone to make a Xamarin GUI for me
+            //
+            //Xamarin programmer: put Xamarin startup stuff in this method here
+            //
+            //when the form exits
+            return;
+        }
     }
     //class for handlers of Xamarin events (for mobile users)
     public class petsimXamarinEventHandlers

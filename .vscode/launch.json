@@ -19,6 +19,12 @@
             "type": "coreclr",
             "request": "attach",
             "processId": "${command:pickProcess}"
+        },
+        {
+            "name": "Debug android",
+            "type": "xamarin",
+            "request": "launch",
+            "packageName": "com.xamarin.debugexample.x_a_debug"
         }
     ]
 }
