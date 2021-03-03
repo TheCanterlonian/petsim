@@ -33,19 +33,18 @@ namespace petsim2
             //see if the user wants to start the CLI instantly
             if (args.Contains("c"))
             {
-                //start the CLI now
+                //start the CLI
             }
             //see if user wants to start the GUI instantly
             if (args.Contains("g"))
             {
-                //preload (check what OS we're working on)
-                //start the GUI now
+                //start the GUI
+                petsimGraphicalTools.PreGraphicalOperations.graphicalStartup();
             }
             /*
             testing stuff, (change this for release,) put tests below here
             */
-            string os = petsimGraphicalTools.PreGraphicalOperations.OperatingSystemChecker();
-            Console.WriteLine(os);
+            Console.WriteLine();
         }
     }
     /*
@@ -442,52 +441,70 @@ namespace petsimGraphicalTools
     //class for functions used before running the GUI (used as preparations)
     public class PreGraphicalOperations
     {
-        //OS checker
-        public static string OperatingSystemChecker()
+        //starts the graphical processing
+        public static void graphicalStartup()
+        {
+            //check if the we're running on a desktop OS
+            bool currentOS = desktopOperatingSystemChecker();
+            //if non-desktop
+            if (!(currentOS))
+            {
+                //start Xamarin runtime
+            }
+            //if desktop
+            else
+            {
+                //start GTK runtime
+                petsimGTKruntime.petsimGTKstartup();
+            }
+        }
+        //desktop OS checker (returns true if running a desktop OS)
+        public static bool desktopOperatingSystemChecker()
         {
             //check for Linux
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
-                return("Linux");
+                return true;
             }
             //check for Windows
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
-                return("Windows");
+                return true;
             }
             //check for BSD
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.FreeBSD))
             {
-                return("FreeBSD");
+                return true;
             }
             //check for MacOS
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
             {
-                return("MacOSX");
+                return true;
             }
             //if running on none of those
             else
             {
                 //return mobile
-                return("mobile");
+                return false;
             }
         }
     }
-    //class for tools relating to the use of GTK (for Linux users)
+    //class for tools relating to the use of GTK (for desktop users)
     public class petsimGTKtools
     {
         //
     }
-    //class for the runtime relating to the use of GTK (for Linux users)
+    //class for the runtime relating to the use of GTK (for desktop users)
     public class petsimGTKruntime
     {
         //GTK GUI window startup method
         public static void petsimGTKstartup()
         {
+            //TODO: expand on this GTK form to make it more useful
             //initialization
             Application.Init();
             //set window properties
-            Window mainWindow = new Window("petsim2 ");
+            Window mainWindow = new Window("petsim2");
             mainWindow.Resize(200,200);
             //set a label
             Label myLabel = new Label();
@@ -500,8 +517,23 @@ namespace petsimGraphicalTools
             Application.Run();
         }
     }
-    //class for handlers of GTK events (for Linux users)
+    //class for handlers of GTK events (for desktop users)
     public class petsimGTKeventHandlers
+    {
+        //
+    }
+    //class for tools relating to the use of Xamarin (for mobile users)
+    public class petsimXamarinTools
+    {
+        //
+    }
+    //class for the runtime relating to the use of Xamarin (for mobile users)
+    public class petsimXamarinRuntime
+    {
+        //
+    }
+    //class for handlers of Xamarin events (for mobile users)
+    public class petsimXamarinEventHandlers
     {
         //
     }
