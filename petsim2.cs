@@ -46,6 +46,7 @@ namespace petsim2
             */
             Console.WriteLine("test begin");
             //
+            petsimConsoleTools.ConsoleOutputGiving.menuCreator(petsimGeneralTools.StaticReturns.stringArrayReturn(1));
             Console.WriteLine("test end");
             return;
         }
@@ -114,12 +115,12 @@ namespace petsimGeneralTools
             //if the string this is being checked against must exactly match one of the strings in the array to return true
             if(mustBeExactMatch)
             {
-                //
+                return true;
             }
             //if the string this is being checked against must contain within it one of the strings in the array to return true
             else
             {
-                //
+                return true;
             }
         }
     }
@@ -220,11 +221,21 @@ namespace petsimGeneralTools
         {
             //set all the arrays to their proper values
             string [] unknownArray = {"error", "unknown array"};
-            string[] illegalFilenameStrings = {"error", "petsim.", "init", "template.xml", ".vscode", ".cs", ".gitignore", "LICENSE", "favicon.ico", "README.md"};
+            string[] illegalFilenameStrings = {"error", "petsim.", "init", "template", ".vscode", ".cs", ".gitignore", "LICENSE", "favicon.ico", "README.md"};
+            string[] mainMenuArray = {"petsim menu", "1. start gui", "2. start cli", "3. quit"};
+            string[] CLImenuArray = {"petsim command line interface", "1. load save file", "2. create save file", "3. delete save file", "4. list files in working directory", "5. go back to previous menu"};
             //array returns
             if (arrayToReturn == 0)
             {
                 return illegalFilenameStrings;
+            }
+            if (arrayToReturn == 1)
+            {
+                return mainMenuArray;
+            }
+            if (arrayToReturn == 2)
+            {
+                return CLImenuArray;
             }
             //if array asked for doesn't exist
             else
@@ -274,6 +285,7 @@ namespace petsimConsoleTools
             it assumes element 0 is always used.
             try to fix this later since this is a very very very very very very very very very very BAD IDEA!!!!!!!!!!!!
             can't be fucked at the moment though... (famous last words)
+            tbh the check is simple, just check the number of elements that are not null...
             */
             //for the length of the first element
             for (int i = 0; i < linesForMenu[0].Length; i++)
@@ -291,7 +303,7 @@ namespace petsimConsoleTools
             }
             Console.Write("\n");
             //for every menu option
-            for (int i = 1; i <= linesForMenu[0].Length; i++)
+            for (int i = 1; i <= linesForMenu.Count(); i++)
             {
                 //write the menu option
                 Console.WriteLine(linesForMenu[i]);
