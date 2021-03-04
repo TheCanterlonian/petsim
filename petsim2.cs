@@ -44,18 +44,20 @@ namespace petsim2
             /*
             testing stuff, (change this for release,) put tests below here
             */
-            Console.WriteLine();
+            Console.WriteLine("test begin");
+            //
+            Console.WriteLine("test end");
+            return;
         }
     }
     /*
     The classes below contain primitive methods for handling simple tasks.
     There are things that need to be created that have not yet been created listed here in order of importance.
     The functions still yet to be implemented are as follows:
-    0. a data return function to read data from a file of defaults and return the set asked for (for new profile data creation)
-    1. a method for finding out if a string is one of a group of strings to replace inline illegal filename checks but also for more general tasks too
+    1. a data return function to read data from a file of defaults and return the set asked for (for new profile data creation)
     2. a method for creating new save files
     3. a method for loading save files
-    4. perfect the console menu creator (petsimConsoleTools.ConsoleOutputGiving.menuCreator(string[]);) it currently ASSUMES element 0 exists
+    4. fix the console menu creator (petsimConsoleTools.ConsoleOutputGiving.menuCreator(string[]);) it currently ASSUMES element 0 exists
     5. a method for loading save data
     6. a class for reading data from the filesystem and the internet (including default data from default filles)
     7. a class for runtime stuff
@@ -106,12 +108,25 @@ namespace petsimGeneralTools
     //class for  low level data processing tools
     public class DataProcessingToolsLow
     {
-        //
+        //checks if a string is illegal (returns true if illegal)
+        public static bool illegalStringChecker(string stringToCheck, int arrayToCheckIn, bool mustBeExactMatch)
+        {
+            //if the string this is being checked against must exactly match one of the strings in the array to return true
+            if(mustBeExactMatch)
+            {
+                //
+            }
+            //if the string this is being checked against must contain within it one of the strings in the array to return true
+            else
+            {
+                //
+            }
+        }
     }
     //class for filesystem editing
     public class FilesystemEditingAndAltering
     {
-        //Profile Data Creator
+        //Profile Data Creator (returns true if successful)
         public static bool newProfileCreator(string fileToCreateDataFor)
         {
             //try to write new data
@@ -139,7 +154,7 @@ namespace petsimGeneralTools
         public static bool fileDeleter(string chosenFileForDeleting)
         {
             //check for illegal files
-            if ((((chosenFileForDeleting.Contains("error")) || (chosenFileForDeleting.Contains("petsim"))) || ((chosenFileForDeleting.Contains("init")) || (chosenFileForDeleting.Contains("cache")))) || (((chosenFileForDeleting.Contains("template")) || (chosenFileForDeleting.Contains("vscode"))) || ((chosenFileForDeleting.Contains("cs")) || (chosenFileForDeleting.Contains(" ")))))
+            if (DataProcessingToolsLow.illegalStringChecker(chosenFileForDeleting, 0, false))
             {
                 //don't delete illegal files
                 return false;
@@ -177,11 +192,46 @@ namespace petsimGeneralTools
             //if template file doesn't exist
             else
             {
+                //create it
+                File.WriteAllText("template.xml", stringReturn(0));
                 //set variable to a hardcoded value
-                newDataToMake = ("<data>\n    <profile>\n        <playerName>unknown</playerName>\n        <numberOfPets>0</numberOfPets>\n        <pronounSubjective>unknown</pronounSubjective>\n        <pronounObjective>unknown</pronounObjective>\n        <pronounPosessive>unknown</pronounPosessive>\n        <seenIntro>false</seenIntro>\n    </profile>\n</data>\n");
+                newDataToMake = stringReturn(0);
             }
             //return the variable
             return(newDataToMake);
+        }
+        //data for string returning (for long strings)
+        public static string stringReturn(int stringToReturn)
+        {
+            //string returns
+            if (stringToReturn == 0)
+            {
+                return("<data>\n    <profile>\n        <playerName>unknown</playerName>\n        <numberOfPets>0</numberOfPets>\n        <pronounSubjective>unknown</pronounSubjective>\n        <pronounObjective>unknown</pronounObjective>\n        <pronounPosessive>unknown</pronounPosessive>\n        <seenIntro>false</seenIntro>\n    </profile>\n</data>\n");
+            }
+            //if set asked for doesn't exist
+            else
+            {
+                Console.WriteLine("unknown string was called");
+                return("error: unknown string");
+            }
+        }
+        //data for string array returning (for long string arrays)
+        public static string[] stringArrayReturn(int arrayToReturn)
+        {
+            //set all the arrays to their proper values
+            string [] unknownArray = {"error", "unknown array"};
+            string[] illegalFilenameStrings = {"error", "petsim.", "init", "template.xml", ".vscode", ".cs", ".gitignore", "LICENSE", "favicon.ico", "README.md"};
+            //array returns
+            if (arrayToReturn == 0)
+            {
+                return illegalFilenameStrings;
+            }
+            //if array asked for doesn't exist
+            else
+            {
+                Console.WriteLine("unknown array was called");
+                return unknownArray;
+            }
         }
     }
     //class for processing tasks performed asynchronously
@@ -295,7 +345,7 @@ namespace petsimConsoleTools
                     else
                     {
                         //check for illegal names
-                        if ((((filenameToCreate.Contains("error")) || (filenameToCreate.Contains("petsim"))) || ((filenameToCreate.Contains("init")) || (filenameToCreate.Contains("cache")))) || (((filenameToCreate.Contains("template")) || (filenameToCreate.Contains("vscode"))) || ((filenameToCreate.Contains("cs")) || (filenameToCreate.Contains(" ")))))
+                        if (petsimGeneralTools.DataProcessingToolsLow.illegalStringChecker(filenameToCreate, 0, false))
                         {
                             //tell the user that this is not allowed
                             Console.WriteLine("Illegal filename.");
@@ -452,6 +502,7 @@ namespace petsimGraphicalTools
             if (!(currentOS))
             {
                 //start Xamarin runtime
+                petsimXamarinRuntime.petsimXamarinStartup();
             }
             //if desktop
             else
@@ -486,7 +537,7 @@ namespace petsimGraphicalTools
             //if running on none of those
             else
             {
-                //return mobile
+                //return non-desktop (mobile)
                 return false;
             }
         }
