@@ -34,6 +34,7 @@ namespace petsim2
             if (args.Contains("c"))
             {
                 //start the CLI
+                CLImenu();
             }
             //see if user wants to start the GUI instantly
             if (args.Contains("g"))
@@ -52,25 +53,60 @@ namespace petsim2
         //main menu
         public static void rootMenu()
         {
-            //print the main menu and ask get the user to select an option
-            petsimConsoleTools.ConsoleOutputGiving.menuCreator(petsimGeneralTools.StaticReturns.stringArrayReturn(1));
-            int chosenMenuOption = petsimConsoleTools.ConsoleInputGrabbingLow.answerHandlerMultipleChoice(3);
-            //if the user chose to open the GUI
-            if (chosenMenuOption == 1)
+            while(true)
             {
-                //start the GUI
-                petsimGraphicalTools.PreGraphicalOperations.graphicalStartup();
+                //print the main menu and ask get the user to select an option
+                petsimConsoleTools.ConsoleOutputGiving.menuCreator(petsimGeneralTools.StaticReturns.stringArrayReturn(1));
+                int chosenMenuOption = petsimConsoleTools.ConsoleInputGrabbingLow.answerHandlerMultipleChoice(3);
+                //if the user chose to open the GUI
+                if (chosenMenuOption == 1)
+                {
+                    //start the GUI
+                    petsimGraphicalTools.PreGraphicalOperations.graphicalStartup();
+                }
+                //if the user chose to open the CLI
+                else if (chosenMenuOption == 2)
+                {
+                    //start the CLI
+                    CLImenu();
+                }
+                //if the user chose to quit
+                else
+                {
+                    //quit
+                    return;
+                }
             }
-            //if the user c hose to open the CLI
-            else if (chosenMenuOption == 2)
+        }
+        //command line interface menu
+        public static void CLImenu()
+        {
+            while(true)
             {
-                //start the CLI
-            }
-            //if the user chose to quit
-            else
-            {
-                //quit
-                return;
+                //print CLI menu and wait for answer
+                petsimConsoleTools.ConsoleOutputGiving.menuCreator(petsimGeneralTools.StaticReturns.stringArrayReturn(2));
+                int chosenMenuOption = petsimConsoleTools.ConsoleInputGrabbingLow.answerHandlerMultipleChoice(5);
+                //user choices
+                if (chosenMenuOption == 1)
+                {
+                    //
+                }
+                else if (chosenMenuOption == 2)
+                {
+                    //
+                }
+                else if (chosenMenuOption == 3)
+                {
+                    //
+                }
+                else if (chosenMenuOption == 4)
+                {
+                    //
+                }
+                else
+                {
+                    return;
+                }
             }
         }
     }
@@ -138,12 +174,12 @@ namespace petsimGeneralTools
             //if the string this is being checked against must exactly match one of the strings in the array to return true
             if(mustBeExactMatch)
             {
-                return true;
+                return true; //TODO: finish this method
             }
             //if the string this is being checked against must contain within it one of the strings in the array to return true
             else
             {
-                return true;
+                return true; //TODO: finish this method
             }
         }
     }
