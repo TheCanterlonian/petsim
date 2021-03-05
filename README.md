@@ -12,9 +12,9 @@ petsim uses the filesystem to save and load profiles and game state in the direc
 <br>
 error.txt - contains the latest crash report
 <br>
-iconL.png - the large icon used by the GUI
+iconLarge.png - the large icon used by the GUI
 <br>
-iconS.ico - the small icon used by the GUI
+iconSmall.ico - the small icon used by the GUI
 <br>
 init.xml - contains startup values for petsim
 <br>
