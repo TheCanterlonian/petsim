@@ -45,9 +45,33 @@ namespace petsim2
             testing stuff, (change this for release,) put tests below here
             */
             Console.WriteLine("test begin");
-            petsimConsoleTools.ConsoleOutputGiving.menuCreator(petsimGeneralTools.StaticReturns.stringArrayReturn(1));
+            rootMenu();
             Console.WriteLine("test end");
             return;
+        }
+        //main menu
+        public static void rootMenu()
+        {
+            //print the main menu and ask get the user to select an option
+            petsimConsoleTools.ConsoleOutputGiving.menuCreator(petsimGeneralTools.StaticReturns.stringArrayReturn(1));
+            int chosenMenuOption = petsimConsoleTools.ConsoleInputGrabbingLow.answerHandlerMultipleChoice(3);
+            //if the user chose to open the GUI
+            if (chosenMenuOption == 1)
+            {
+                //start the GUI
+                petsimGraphicalTools.PreGraphicalOperations.graphicalStartup();
+            }
+            //if the user c hose to open the CLI
+            else if (chosenMenuOption == 2)
+            {
+                //start the CLI
+            }
+            //if the user chose to quit
+            else
+            {
+                //quit
+                return;
+            }
         }
     }
     /*
@@ -219,10 +243,11 @@ namespace petsimGeneralTools
         public static string[] stringArrayReturn(int arrayToReturn)
         {
             //set all the arrays to their proper values
-            string [] unknownArray = {"error", "unknown array"};
-            string[] illegalFilenameStrings = {"error", "petsim.", "init", "template", ".vscode", ".cs", ".gitignore", "LICENSE", "favicon.ico", "README.md"};
-            string[] mainMenuArray = {"petsim menu", "1. start gui", "2. start cli", "3. quit"};
-            string[] CLImenuArray = {"petsim command line interface", "1. load save file", "2. create save file", "3. delete save file", "4. list files in working directory", "5. go back to previous menu"};
+            string [] unknownArray = {"error", "unknown array"}; //-1
+            string[] illegalFilenameStrings = {"error", "petsim.", "init", "template", ".vscode", ".cs", ".gitignore", "LICENSE", "favicon.ico", "README.md"}; //0
+            string[] mainMenuArray = {"petsim menu", "1. start gui", "2. start cli", "3. quit"}; //1
+            string[] CLImenuArray = {"petsim command line interface", "1. load save file", "2. create save file", "3. delete save file", "4. list files in working directory", "5. go back to previous menu"};//2
+            string[] otherMenuArray = {"one", "two"}; //3
             //array returns
             if (arrayToReturn == 0)
             {
@@ -409,7 +434,7 @@ namespace petsimConsoleTools
             while (!selected)
             {
                 //ask user for input
-                Console.Write("Type the number of the option you wish to select, then press ENTER:");
+                Console.Write("Type the number of the option you wish to select, then press ENTER: ");
                 //take in the answer and assign it to a string variable
                 string userEntry = Console.ReadLine();
                 Console.WriteLine("");
@@ -548,7 +573,7 @@ namespace petsimGraphicalTools
             //if running on none of those
             else
             {
-                //return non-desktop (mobile)
+                //return non-desktop (probably mobile)
                 return false;
             }
         }
@@ -574,10 +599,10 @@ namespace petsimGraphicalTools
             Application.Init();
             //set window properties
             Window mainWindow = new Window("petsim2");
-            mainWindow.Resize(200,200);
+            mainWindow.Resize(640,480);
             //set a label
             Label myLabel = new Label();
-            myLabel.Text = "test";
+            myLabel.Text = "GUI is unavailable.";
             //Add the label to the form
             mainWindow.Add(myLabel);
             //show what we have created
