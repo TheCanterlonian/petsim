@@ -1,4 +1,4 @@
-﻿//petsim2 by Tiffany Erika Darling (that's right, legal name change motherfuckers!)
+﻿//petsim2 by Tiffany Erika Darling
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -45,7 +45,6 @@ namespace petsim2
             testing stuff, (change this for release,) put tests below here
             */
             Console.WriteLine("test begin");
-            //
             petsimConsoleTools.ConsoleOutputGiving.menuCreator(petsimGeneralTools.StaticReturns.stringArrayReturn(1));
             Console.WriteLine("test end");
             return;
@@ -282,7 +281,7 @@ namespace petsimConsoleTools
         {
             /*
             this method uses element zero of the input as the menu title.
-            it assumes element 0 is always used.
+            it assumes element 0 and 1 are always used.
             try to fix this later since this is a very very very very very very very very very very BAD IDEA!!!!!!!!!!!!
             can't be fucked at the moment though... (famous last words)
             tbh the check is simple, just check the number of elements that are not null...
@@ -303,7 +302,7 @@ namespace petsimConsoleTools
             }
             Console.Write("\n");
             //for every menu option
-            for (int i = 1; i <= linesForMenu.Count(); i++)
+            for (int i = 1; i < linesForMenu.Count(); i++) // for (int i = 1; i <= (linesForMenu.Count()-1); i++) // my incompetence knows no bounds
             {
                 //write the menu option
                 Console.WriteLine(linesForMenu[i]);
