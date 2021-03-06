@@ -1,4 +1,6 @@
 ﻿//petsim2 by Tiffany Erika Darling
+//the spaghettification of this project is insane!!!
+//you have been warned...
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -42,6 +44,7 @@ namespace petsim2
                 //start the GUI
                 petsimGraphicalTools.PreGraphicalOperations.graphicalStartup();
             }
+            //rootMenu(); //uncomment this on release
             /*
             testing stuff, (change this for release,) put tests below here
             */
@@ -89,19 +92,20 @@ namespace petsim2
                 //user choices
                 if (chosenMenuOption == 1)
                 {
-                    //
+                    //load save file
                 }
                 else if (chosenMenuOption == 2)
                 {
-                    //
+                    //create save file
                 }
                 else if (chosenMenuOption == 3)
                 {
-                    //
+                    //delete save file
                 }
                 else if (chosenMenuOption == 4)
                 {
-                    //
+                    //list files in working directory
+                    Console.Write(petsimGeneralTools.FilesystemEditingAndAltering.filesInDirectoryListGetter(Directory.GetCurrentDirectory()));
                 }
                 else
                 {
@@ -209,6 +213,22 @@ namespace petsimGeneralTools
             }
             //if it doesn't fail, return that it completed correctly
             return true;
+        }
+        //lists files in given directory
+        public static string filesInDirectoryListGetter(string directoryToListFilesIn)
+        {
+            //create string to facilitate the conversion of an array into a string
+            string formerArrayString = ("");
+            //grab an array of the files
+            string[] filesInDirectory = Directory.GetFiles(directoryToListFilesIn);
+            //enumerate them as a list
+            foreach (string singleFileInDirectory in filesInDirectory)
+            {
+                //assign them all one by one from an array into a string
+                formerArrayString = (formerArrayString + (Path.GetFileName(singleFileInDirectory)) + ("\n"));
+            }
+            //return the list of files as a string
+            return formerArrayString;
         }
         //file deleter (returns true if successful)
         public static bool fileDeleter(string chosenFileForDeleting)
@@ -692,3 +712,5 @@ namespace petsimGraphicalTools
         //
     }
 }
+
+
