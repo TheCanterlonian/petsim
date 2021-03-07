@@ -1,0 +1,10 @@
+<data>
+    <profile>
+        <playerName>unknown</playerName>
+        <numberOfPets>0</numberOfPets>
+        <pronounSubjective>unknown</pronounSubjective>
+        <pronounObjective>unknown</pronounObjective>
+        <pronounPosessive>unknown</pronounPosessive>
+        <seenIntro>false</seenIntro>
+    </profile>
+</data>

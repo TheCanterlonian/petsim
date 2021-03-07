@@ -96,7 +96,8 @@ namespace petsim2
                 }
                 else if (chosenMenuOption == 2)
                 {
-                    //create save file
+                    //create the save file
+                    petsimGeneralTools.FilesystemEditingAndAltering.newProfileCreator(petsimConsoleTools.ConsoleInputGrabbingHigh.fileNameInputGetter(false));
                 }
                 else if (chosenMenuOption == 3)
                 {
@@ -178,12 +179,34 @@ namespace petsimGeneralTools
             //if the string this is being checked against must exactly match one of the strings in the array to return true
             if(mustBeExactMatch)
             {
-                return true; //TODO: finish this method
+                //for every string in the array to check in
+                foreach(string stringInTheArray in StaticReturns.stringArrayReturn(0))
+                {
+                    //if the string to check is the same as one of the strings in the array
+                    if (stringToCheck == (stringInTheArray))
+                    {
+                        //return match found
+                        return true;
+                    }
+                }
+                //if the loop exits, it never returned a match
+                return false;
             }
             //if the string this is being checked against must contain within it one of the strings in the array to return true
             else
             {
-                return true; //TODO: finish this method
+                //for every string in the array to check in
+                foreach(string stringInTheArray in StaticReturns.stringArrayReturn(0))
+                {
+                    //if the string to check contains one of the strings in the array
+                    if (stringToCheck.Contains(stringInTheArray))
+                    {
+                        //return match found
+                        return true;
+                    }
+                }
+                //if the loop exits, it never returned a match
+                return false;
             }
         }
     }
@@ -399,11 +422,14 @@ namespace petsimConsoleTools
         {
             //create bool to keep track of selection status
             bool selected = false;
+            //create variable to keep track of the number of times we've been through the protection loop
             //if the file spposedly already exists (for file editing)
             if (existing == true)
             {
                 while (!selected)
                 {
+                    //ask for filename
+                    Console.Write("\nType the name of the existing save file and press ENTER: ");
                     //grab the user's idea of a filename
                     string filenameToEdit = ConsoleInputGrabbingLow.stringInputGetter(true, true);
                     //check to make sure it exists
@@ -415,8 +441,10 @@ namespace petsimConsoleTools
                     //otherwise
                     else
                     {
-                        //return error by exiting loop
-                        selected = true;
+                        //tell the user that the file doesn't exist
+                        Console.WriteLine("File doesn't exist.");
+                        //exit the loop
+                        selected = true; 
                     }
                 }
             }
@@ -425,6 +453,8 @@ namespace petsimConsoleTools
             {
                 while (!selected)
                 {
+                    //ask for filename
+                    Console.Write("\nType a name for the new save file and press ENTER: ");
                     //grab the user's idea of a filename
                     string filenameToCreate = ConsoleInputGrabbingLow.stringInputGetter(true, true);
                     //check to see if it already exists
@@ -450,7 +480,7 @@ namespace petsimConsoleTools
                     }
                 }
             }
-            //exited loop, return error
+            //eited loop, return error
             return ("error");
         }
     }
