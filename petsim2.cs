@@ -244,6 +244,8 @@ namespace petsimGeneralTools
             string formerArrayString = ("");
             //grab an array of the files
             string[] filesInDirectory = Directory.GetFiles(directoryToListFilesIn);
+            //sort the array
+            Array.Sort(filesInDirectory);
             //enumerate them as a list
             foreach (string singleFileInDirectory in filesInDirectory)
             {
