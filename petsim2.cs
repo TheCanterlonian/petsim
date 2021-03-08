@@ -20,7 +20,7 @@ digital pet simulator 2 (1 lost a lot of work so i decided to rewrite it all fro
 */
 namespace petsim2
 {
-    //class for iceberg tip processing
+    //class for early pre-game menus
     public class Program
     {
         //program entry point
@@ -92,10 +92,11 @@ namespace petsim2
                 {
                     //grab the name of the file to load
                     string fileThatWillBeLoaded = petsimConsoleTools.ConsoleInputGrabbingHigh.fileNameInputGetter(true, false);
-                    //check for not error
+                    //if there's no error
                     if (!(fileThatWillBeLoaded==("error")))
                     {
-                        //TODO: load with the profile accessor
+                        //load with the profile accessor
+                        petsimGeneralTools.GameStateTools.profileAccessor(fileThatWillBeLoaded);
                     }
                     //load save file
                 }
@@ -127,6 +128,7 @@ namespace petsim2
             }
         }
     }
+    //class for what
     /*
     The classes below contain primitive methods for handling simple tasks.
     There are things that need to be created that have not yet been created listed here in order of importance.
@@ -154,25 +156,56 @@ namespace petsimGeneralTools
     //class for tools used to keep track of and used for processing the game state
     public class GameStateTools
     {
-        //profile loader
+        //profile loader (returns true if successful)
         public static bool profileAccessor(string filenameToLoadDataFrom)
         {
+            //assign the save file's content to a string variable
+            string saveFileData = File.ReadAllText(filenameToLoadDataFrom);
+            //trim the data of whitespace at the beginning and end
+            saveFileData = saveFileData.TrimStart();
+            saveFileData = saveFileData.TrimEnd();
             //if file is empty
-            if(File.ReadAllText(filenameToLoadDataFrom) == (""))
+            if(saveFileData == (""))
             {
                 //create new data
-                petsimGeneralTools.FilesystemEditingAndAltering.newProfileCreator(filenameToLoadDataFrom);
+                bool writeAllNewData = petsimGeneralTools.FilesystemEditingAndAltering.newProfileCreator(filenameToLoadDataFrom);
+                //if it was unsuccessful
+                if(!(writeAllNewData))
+                {
+                    //tell the user
+                    Console.WriteLine("Could not create save data in this file.");
+                    Console.WriteLine("Please check if the file is writable or read-only before trying again.");
+                    return false;
+                }
             }
             //otherwise
             else
             {
-                //check if data is valid, if not, return false
+                //create an xml reader for the file that we're loading from
+                using var reader = XmlReader.Create(filenameToLoadDataFrom);
+                //load primary data
+                reader.ReadToFollowing("playerName");
+                string playerName = reader.ReadElementContentAsString();
+                reader.ReadToFollowing("numberOfPets");
+                int numberOfPets = reader.ReadElementContentAsInt();
+                //read pronouns in
+                reader.ReadToFollowing("pronounSubjective");
+                string pronounSubjective = reader.ReadElementContentAsString();
+                reader.ReadToFollowing("pronounObjective");
+                string pronounObjective = reader.ReadElementContentAsString();
+                reader.ReadToFollowing("pronounPosessive");
+                string pronounPosessive = reader.ReadElementContentAsString();
+                //load save state booleans
+                reader.ReadToFollowing("seenIntro");
+                bool seenIntro = reader.ReadElementContentAsBoolean();
+                reader.ReadToFollowing("eros");
+                bool eros = reader.ReadElementContentAsBoolean();
+                //
             }
-            //load data
             //TODO: actually create the loader so data can be saved
             //OHNO: all my code was deleted because i was an idiot, sorry
             //guess i will just start over and rewrite this all from scratch
-            return true;
+            return false;
         }
     }
     //class for  high level data processing tools
@@ -321,13 +354,13 @@ namespace petsimGeneralTools
             //string returns
             if (stringToReturn == 0)
             {
-                return("<data>\n    <profile>\n        <playerName>unknown</playerName>\n        <numberOfPets>0</numberOfPets>\n        <pronounSubjective>unknown</pronounSubjective>\n        <pronounObjective>unknown</pronounObjective>\n        <pronounPosessive>unknown</pronounPosessive>\n        <seenIntro>false</seenIntro>\n    </profile>\n</data>\n");
+                return("<data>\n    <profile>\n        <playerName>unknown</playerName>\n        <numberOfPets>0</numberOfPets>\n        <pronounSubjective>unknown</pronounSubjective>\n        <pronounObjective>unknown</pronounObjective>\n        <pronounPosessive>unknown</pronounPosessive>\n        <seenIntro>false</seenIntro>\n        <eros>false</eros>\n    </profile>\n</data>\n");
             }
             //if set asked for doesn't exist
             else
             {
                 Console.WriteLine("unknown string was called");
-                return("error: unknown string");
+                return("error");
             }
         }
         //data for string array returning (for long string arrays)
@@ -335,7 +368,7 @@ namespace petsimGeneralTools
         {
             //set all the arrays to their proper values
             string [] unknownArray = {"error", "unknown array"}; //-1
-            string[] illegalFilenameStrings = {"error", "petsim.", "init", "template", ".vscode", ".cs", ".gitignore", "LICENSE", "favicon.ico", "README.md"}; //0
+            string[] illegalFilenameStrings = {"error", "petsim.", "init", "template", ".vscode", ".cs", ".gitignore", "LICENSE", "favicon.ico", "README.md", "iconSmall.ico", "iconLarge.png"}; //0
             string[] mainMenuArray = {"petsim menu", "1. start gui", "2. start cli", "3. quit"}; //1
             string[] CLImenuArray = {"petsim command line interface", "1. load save file", "2. create save file", "3. delete save file", "4. list files in working directory", "5. go back to previous menu"};//2
             string[] otherMenuArray = {"one", "two"}; //3
@@ -637,7 +670,6 @@ The classes below are tools and utilities for the graphical interface.
 */
 namespace petsimGraphicalTools
 {
-    //TODO: make a GUI
     //class for functions used before running the GUI (used as preparations)
     public class PreGraphicalOperations
     {
