@@ -48,9 +48,7 @@ namespace petsim2
             /*
             testing stuff, (change this for release,) put tests below here
             */
-            Console.WriteLine("test begin");
             rootMenu();
-            Console.WriteLine("test end");
             return;
         }
         //main menu
@@ -92,6 +90,13 @@ namespace petsim2
                 //user choices
                 if (chosenMenuOption == 1)
                 {
+                    //grab the name of the file to load
+                    string fileThatWillBeLoaded = petsimConsoleTools.ConsoleInputGrabbingHigh.fileNameInputGetter(true, false);
+                    //check for not error
+                    if (!(fileThatWillBeLoaded==("error")))
+                    {
+                        //TODO: load with the profile accessor
+                    }
                     //load save file
                 }
                 else if (chosenMenuOption == 2)
@@ -101,8 +106,14 @@ namespace petsim2
                 }
                 else if (chosenMenuOption == 3)
                 {
-                    //delete save file
-                    petsimGeneralTools.FilesystemEditingAndAltering.fileDeleter(petsimConsoleTools.ConsoleInputGrabbingHigh.fileNameInputGetter(true, true));
+                    //grab the filename
+                    string fileThatIsToBeDeleted = petsimConsoleTools.ConsoleInputGrabbingHigh.fileNameInputGetter(true, true);
+                    //make sure there's no error
+                    if (!(fileThatIsToBeDeleted == ("error")))
+                    {
+                        //delete save file
+                        petsimGeneralTools.FilesystemEditingAndAltering.fileDeleter(fileThatIsToBeDeleted);
+                    }
                 }
                 else if (chosenMenuOption == 4)
                 {
@@ -120,21 +131,19 @@ namespace petsim2
     The classes below contain primitive methods for handling simple tasks.
     There are things that need to be created that have not yet been created listed here in order of importance.
     The functions still yet to be implemented are as follows:
-    1. a data return function to read data from a file of defaults and return the set asked for (for new profile data creation)
-    2. a method for creating new save files
-    3. a method for loading save files
-    4. fix the console menu creator (petsimConsoleTools.ConsoleOutputGiving.menuCreator(string[]);) it currently ASSUMES element 0 exists
-    5. a method for loading save data
-    6. a class for reading data from the filesystem and the internet (including default data from default filles)
-    7. a class for runtime stuff
-    8. a class for console interaction (high level in & out)
-    9. a function to check what OS we are running on and decide which version of the GUI to run
-    10. a gui for each: desktop and mobile
-    11. a background processor for the gui
-    12. credits/about box (both console and gui readable)
-    13. allow the program to take arguments (to activate the GUI or CLI intantly)
-    14. async stuff to run the game while the interface is open
-    15. pay a Xamarin developer to make a GUI for me
+    0. a data return function to read data from a file of defaults and return the set asked for (for new profile data creation)
+    1. a method for loading save files
+    2. fix the console menu creator (petsimConsoleTools.ConsoleOutputGiving.menuCreator(string[]);) it currently ASSUMES element 0 exists
+    3. a method for loading save data
+    4. a class for reading data from the filesystem and the internet (including default data from default filles)
+    5. a class for runtime stuff
+    6. a class for console interaction (high level in & out)
+    7. a function to check what OS we are running on and decide which version of the GUI to run
+    8. a background processor for the gui
+    9. credits/about box (both console and gui readable)
+    10. allow the program to take arguments (to activate the GUI or CLI intantly)
+    11. async stuff to run the game while the interface is open
+    12. pay a Xamarin developer to make a GUI for me
     */
 }
 /*
@@ -421,7 +430,7 @@ namespace petsimConsoleTools
     public class ConsoleInputGrabbingHigh
     {
         //filename handler
-        public static string fileNameInputGetter(bool existing, bool deletion)
+        public static string fileNameInputGetter(bool existing, bool deletionSake)
         {
             //create bool to keep track of selection status
             bool selected = false;
@@ -436,7 +445,7 @@ namespace petsimConsoleTools
                     //grab the user's idea of a filename
                     string filenameToEdit = ConsoleInputGrabbingLow.stringInputGetter(true, true);
                     //if we are deleting a file 
-                    if(deletion)
+                    if(deletionSake)
                     {
                         //make sure the user knows this
                         Console.WriteLine("\nThis will permanently delete the file, are you sure?");
