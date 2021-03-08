@@ -97,11 +97,12 @@ namespace petsim2
                 else if (chosenMenuOption == 2)
                 {
                     //create the save file
-                    petsimGeneralTools.FilesystemEditingAndAltering.newProfileCreator(petsimConsoleTools.ConsoleInputGrabbingHigh.fileNameInputGetter(false));
+                    petsimGeneralTools.FilesystemEditingAndAltering.newProfileCreator(petsimConsoleTools.ConsoleInputGrabbingHigh.fileNameInputGetter(false, false));
                 }
                 else if (chosenMenuOption == 3)
                 {
                     //delete save file
+                    petsimGeneralTools.FilesystemEditingAndAltering.fileDeleter(petsimConsoleTools.ConsoleInputGrabbingHigh.fileNameInputGetter(true, true));
                 }
                 else if (chosenMenuOption == 4)
                 {
@@ -420,7 +421,7 @@ namespace petsimConsoleTools
     public class ConsoleInputGrabbingHigh
     {
         //filename handler
-        public static string fileNameInputGetter(bool existing)
+        public static string fileNameInputGetter(bool existing, bool deletion)
         {
             //create bool to keep track of selection status
             bool selected = false;
@@ -434,6 +435,20 @@ namespace petsimConsoleTools
                     Console.Write("\nType the name of the existing save file and press ENTER: ");
                     //grab the user's idea of a filename
                     string filenameToEdit = ConsoleInputGrabbingLow.stringInputGetter(true, true);
+                    //if we are deleting a file 
+                    if(deletion)
+                    {
+                        //make sure the user knows this
+                        Console.WriteLine("\nThis will permanently delete the file, are you sure?");
+                        //see what the user says
+                        bool surely = ConsoleInputGrabbingLow.answerHandlerYesOrNo();
+                        //if the user says no
+                        if(!(surely))
+                        {
+                            //return the user changed their mind
+                            selected = true;
+                        }
+                    }
                     //check to make sure it exists
                     if (File.Exists(filenameToEdit))
                     {
@@ -446,7 +461,7 @@ namespace petsimConsoleTools
                         //tell the user that the file doesn't exist
                         Console.WriteLine("File doesn't exist.");
                         //exit the loop
-                        selected = true; 
+                        selected = true;
                     }
                 }
             }
