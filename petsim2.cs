@@ -20,6 +20,11 @@ digital pet simulator 2 (1 lost a lot of work so i decided to rewrite it all fro
 */
 namespace petsim2
 {
+    //class for global variables (very bad idea, never do this, it's just supposed to be a placeholder until i figure something else out
+    public class Global
+    {
+        //
+    }
     //class for early pre-game menus
     public class Program
     {
@@ -42,7 +47,7 @@ namespace petsim2
             if (args.Contains("g"))
             {
                 //start the GUI
-                petsimGraphicalTools.PreGraphicalOperations.graphicalStartup();
+                PreGraphicalOperations.graphicalStartup();
             }
             //rootMenu(); //uncomment this on release
             /*
@@ -57,13 +62,13 @@ namespace petsim2
             while(true)
             {
                 //print the main menu and ask get the user to select an option
-                petsimConsoleTools.ConsoleOutputGiving.menuCreator(petsimGeneralTools.StaticReturns.stringArrayReturn(1));
-                int chosenMenuOption = petsimConsoleTools.ConsoleInputGrabbingLow.answerHandlerMultipleChoice(3);
+                ConsoleOutputGiving.menuCreator(StaticReturns.stringArrayReturn(1));
+                int chosenMenuOption = ConsoleInputGrabbingLow.answerHandlerMultipleChoice(3);
                 //if the user chose to open the GUI
                 if (chosenMenuOption == 1)
                 {
                     //start the GUI
-                    petsimGraphicalTools.PreGraphicalOperations.graphicalStartup();
+                    PreGraphicalOperations.graphicalStartup();
                 }
                 //if the user chose to open the CLI
                 else if (chosenMenuOption == 2)
@@ -85,41 +90,41 @@ namespace petsim2
             while(true)
             {
                 //print CLI menu and wait for answer
-                petsimConsoleTools.ConsoleOutputGiving.menuCreator(petsimGeneralTools.StaticReturns.stringArrayReturn(2));
-                int chosenMenuOption = petsimConsoleTools.ConsoleInputGrabbingLow.answerHandlerMultipleChoice(5);
+                ConsoleOutputGiving.menuCreator(StaticReturns.stringArrayReturn(2));
+                int chosenMenuOption = ConsoleInputGrabbingLow.answerHandlerMultipleChoice(5);
                 //user choices
                 if (chosenMenuOption == 1)
                 {
                     //grab the name of the file to load
-                    string fileThatWillBeLoaded = petsimConsoleTools.ConsoleInputGrabbingHigh.fileNameInputGetter(true, false);
+                    string fileThatWillBeLoaded = ConsoleInputGrabbingHigh.fileNameInputGetter(true, false);
                     //if there's no error
                     if (!(fileThatWillBeLoaded==("error")))
                     {
                         //load with the profile accessor
-                        petsimGeneralTools.GameStateTools.profileAccessor(fileThatWillBeLoaded);
+                        GameStateTools.profileAccessor(fileThatWillBeLoaded);
                     }
                     //load save file
                 }
                 else if (chosenMenuOption == 2)
                 {
                     //create the save file
-                    petsimGeneralTools.FilesystemEditingAndAltering.newProfileCreator(petsimConsoleTools.ConsoleInputGrabbingHigh.fileNameInputGetter(false, false));
+                    FilesystemEditingAndAltering.newProfileCreator(ConsoleInputGrabbingHigh.fileNameInputGetter(false, false));
                 }
                 else if (chosenMenuOption == 3)
                 {
                     //grab the filename
-                    string fileThatIsToBeDeleted = petsimConsoleTools.ConsoleInputGrabbingHigh.fileNameInputGetter(true, true);
+                    string fileThatIsToBeDeleted = ConsoleInputGrabbingHigh.fileNameInputGetter(true, true);
                     //make sure there's no error
                     if (!(fileThatIsToBeDeleted == ("error")))
                     {
                         //delete save file
-                        petsimGeneralTools.FilesystemEditingAndAltering.fileDeleter(fileThatIsToBeDeleted);
+                        FilesystemEditingAndAltering.fileDeleter(fileThatIsToBeDeleted);
                     }
                 }
                 else if (chosenMenuOption == 4)
                 {
                     //list files in working directory
-                    Console.Write(petsimGeneralTools.FilesystemEditingAndAltering.filesInDirectoryListGetter(Directory.GetCurrentDirectory()));
+                    Console.Write(FilesystemEditingAndAltering.filesInDirectoryListGetter(Directory.GetCurrentDirectory()));
                 }
                 else
                 {
@@ -128,31 +133,22 @@ namespace petsim2
             }
         }
     }
-    //class for what
     /*
     The classes below contain primitive methods for handling simple tasks.
     There are things that need to be created that have not yet been created listed here in order of importance.
     The functions still yet to be implemented are as follows:
     0. a data return function to read data from a file of defaults and return the set asked for (for new profile data creation)
     1. a method for loading save files
-    2. fix the console menu creator (petsimConsoleTools.ConsoleOutputGiving.menuCreator(string[]);) it currently ASSUMES element 0 exists
+    2. fix the console menu creator (ConsoleOutputGiving.menuCreator(string[]);) it currently ASSUMES element 0 exists
     3. a method for loading save data
-    4. a class for reading data from the filesystem and the internet (including default data from default filles)
-    5. a class for runtime stuff
-    6. a class for console interaction (high level in & out)
-    7. a function to check what OS we are running on and decide which version of the GUI to run
-    8. a background processor for the gui
-    9. credits/about box (both console and gui readable)
-    10. allow the program to take arguments (to activate the GUI or CLI intantly)
-    11. async stuff to run the game while the interface is open
-    12. pay a Xamarin developer to make a GUI for me
+    4. a class for runtime stuff
+    5. a class for console interaction (high level in & out)
+    6. a background processor for the gui
+    7. credits/about box (both console and gui readable)
+    8. async stuff to run the game while the interface is open
+    9. pay a Xamarin developer to make a GUI for me
+    10. create tracker to keep track of variables and return output when given input from any method that calls upon them (make it run in background)
     */
-}
-/*
-The classes below are tools and utilities for all interfaces.
-*/
-namespace petsimGeneralTools
-{
     //class for tools used to keep track of and used for processing the game state
     public class GameStateTools
     {
@@ -168,7 +164,7 @@ namespace petsimGeneralTools
             if(saveFileData == (""))
             {
                 //create new data
-                bool writeAllNewData = petsimGeneralTools.FilesystemEditingAndAltering.newProfileCreator(filenameToLoadDataFrom);
+                bool writeAllNewData = FilesystemEditingAndAltering.newProfileCreator(filenameToLoadDataFrom);
                 //if it was unsuccessful
                 if(!(writeAllNewData))
                 {
@@ -206,6 +202,15 @@ namespace petsimGeneralTools
             //OHNO: all my code was deleted because i was an idiot, sorry
             //guess i will just start over and rewrite this all from scratch
             return false;
+        }
+        //keeps track of the profile variables
+        public static void profileTracker() //should this be a void??? idk
+        {
+            //keep open until it's told to close
+            while(true)
+            {
+                //TODO: create this
+            }
         }
     }
     //class for  high level data processing tools
@@ -396,6 +401,11 @@ namespace petsimGeneralTools
     //class for processing tasks performed asynchronously
     public class AsynchronousProcessingTasks
     {
+        public async void test()
+        {
+            await Task.Delay(20000);
+            Console.WriteLine("boop");
+        }
         /*
         //main async threading method
         public async Task MainAsync()
@@ -405,6 +415,8 @@ namespace petsimGeneralTools
             //block the async main method from returning until after the application is exited
             await Task.Delay(-1);
         }
+        */
+        /*
         //message receiver activates when a message is recieved
         private async Task asynctaskname(string message)
         {
@@ -416,12 +428,6 @@ namespace petsimGeneralTools
         }
         */
     }
-}
-/*
-The classes below are tools and utilities for the console interface.
-*/
-namespace petsimConsoleTools
-{
     //class for giving outputs to the console
     public class ConsoleOutputGiving
     {
@@ -526,7 +532,7 @@ namespace petsimConsoleTools
                     else
                     {
                         //check for illegal names
-                        if (petsimGeneralTools.DataProcessingToolsLow.illegalStringChecker(filenameToCreate, 0, false))
+                        if (DataProcessingToolsLow.illegalStringChecker(filenameToCreate, 0, false))
                         {
                             //tell the user that this is not allowed
                             Console.WriteLine("Illegal filename.");
@@ -664,12 +670,6 @@ namespace petsimConsoleTools
             }
         }
     }
-}
-/*
-The classes below are tools and utilities for the graphical interface.
-*/
-namespace petsimGraphicalTools
-{
     //class for functions used before running the GUI (used as preparations)
     public class PreGraphicalOperations
     {
