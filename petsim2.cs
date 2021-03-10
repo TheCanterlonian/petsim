@@ -228,6 +228,12 @@ namespace petsimGeneralTools
                 }
                 //if it did work, load the data into the game state variables
                 _playerName = playerName;
+                _numberOfPets = numberOfPets;
+                _pronounSubjective = pronounSubjective;
+                _pronounObjective = pronounObjective;
+                _pronounPosessive = pronounPosessive;
+                _seenIntro = seenIntro;
+                _eros = eros;
                 return true;
             }
             return false;
