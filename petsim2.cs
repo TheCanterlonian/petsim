@@ -134,16 +134,13 @@ namespace petsim2
     There are things that need to be created that have not yet been created listed here in order of importance.
     The functions still yet to be implemented are as follows:
     0. a data return function to read data from a file of defaults and return the set asked for (for new profile data creation)
-    1. a method for loading save files
-    2. fix the console menu creator (petsimConsoleTools.ConsoleOutputGiving.menuCreator(string[]);) it currently ASSUMES element 0 exists
-    3. a method for loading save data
-    4. a class for runtime stuff
-    5. a class for console interaction (high level in & out)
-    6. a background processor for the gui
-    7. credits/about box (both console and gui readable)
-    8. async stuff to run the game while the interface is open
-    9. pay a Xamarin developer to make a GUI for me
-    10. create tracker to keep track of variables and return output when given input from any method that calls upon them (make it run in background)
+    1. fix the console menu creator (petsimConsoleTools.ConsoleOutputGiving.menuCreator(string[]);) it currently ASSUMES element 0 exists
+    2. a class for runtime stuff
+    3. a class for console interaction (high level in & out)
+    4. a background processor for the gui
+    5. credits/about box (both console and gui readable)
+    6. async stuff to run the game while the interface is open
+    7. pay a Xamarin developer to make a GUI for me
     */
 }
 /*
