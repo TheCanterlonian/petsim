@@ -137,15 +137,13 @@ namespace petsim2
     1. a method for loading save files
     2. fix the console menu creator (petsimConsoleTools.ConsoleOutputGiving.menuCreator(string[]);) it currently ASSUMES element 0 exists
     3. a method for loading save data
-    4. a class for reading data from the filesystem and the internet (including default data from default filles)
-    5. a class for runtime stuff
-    6. a class for console interaction (high level in & out)
-    7. a function to check what OS we are running on and decide which version of the GUI to run
-    8. a background processor for the gui
-    9. credits/about box (both console and gui readable)
-    10. allow the program to take arguments (to activate the GUI or CLI intantly)
-    11. async stuff to run the game while the interface is open
-    12. pay a Xamarin developer to make a GUI for me
+    4. a class for runtime stuff
+    5. a class for console interaction (high level in & out)
+    6. a background processor for the gui
+    7. credits/about box (both console and gui readable)
+    8. async stuff to run the game while the interface is open
+    9. pay a Xamarin developer to make a GUI for me
+    10. create tracker to keep track of variables and return output when given input from any method that calls upon them (make it run in background)
     */
 }
 /*
@@ -156,6 +154,14 @@ namespace petsimGeneralTools
     //class for tools used to keep track of and used for processing the game state
     public class GameStateTools
     {
+        //initialize game state variables, make them private but accessible from anywhere inside this class
+        private static string _playerName = "unknown";
+        private static int _numberOfPets = 0;
+        private static string _pronounSubjective = "unknown";
+        private static string _pronounObjective = "unknown";
+        private static string _pronounPosessive = "unknown";
+        private static bool _seenIntro = false;
+        private static bool _eros = false;
         //profile loader (returns true if successful)
         public static bool profileAccessor(string filenameToLoadDataFrom)
         {
@@ -181,30 +187,49 @@ namespace petsimGeneralTools
             //otherwise
             else
             {
-                //create an xml reader for the file that we're loading from
-                using var reader = XmlReader.Create(filenameToLoadDataFrom);
-                //load primary data
-                reader.ReadToFollowing("playerName");
-                string playerName = reader.ReadElementContentAsString();
-                reader.ReadToFollowing("numberOfPets");
-                int numberOfPets = reader.ReadElementContentAsInt();
-                //read pronouns in
-                reader.ReadToFollowing("pronounSubjective");
-                string pronounSubjective = reader.ReadElementContentAsString();
-                reader.ReadToFollowing("pronounObjective");
-                string pronounObjective = reader.ReadElementContentAsString();
-                reader.ReadToFollowing("pronounPosessive");
-                string pronounPosessive = reader.ReadElementContentAsString();
-                //load save state booleans
-                reader.ReadToFollowing("seenIntro");
-                bool seenIntro = reader.ReadElementContentAsBoolean();
-                reader.ReadToFollowing("eros");
-                bool eros = reader.ReadElementContentAsBoolean();
-                //
+                //create variables to vet the save file's data
+                string playerName = "unknown";
+                int numberOfPets = 0;
+                string pronounSubjective = "unknown";
+                string pronounObjective = "unknown";
+                string pronounPosessive = "unknown";
+                bool seenIntro = false;
+                bool eros = false;
+                //try to load data
+                try
+                {
+                    //create an xml reader for the file that we're loading from
+                    using var reader = XmlReader.Create(filenameToLoadDataFrom);
+                    //load primary data
+                    reader.ReadToFollowing("playerName");
+                    playerName = reader.ReadElementContentAsString();
+                    reader.ReadToFollowing("numberOfPets");
+                    numberOfPets = reader.ReadElementContentAsInt();
+                    //read pronouns in
+                    reader.ReadToFollowing("pronounSubjective");
+                    pronounSubjective = reader.ReadElementContentAsString();
+                    reader.ReadToFollowing("pronounObjective");
+                    pronounObjective = reader.ReadElementContentAsString();
+                    reader.ReadToFollowing("pronounPosessive");
+                    pronounPosessive = reader.ReadElementContentAsString();
+                    //load save state booleans
+                    reader.ReadToFollowing("seenIntro");
+                    seenIntro = reader.ReadElementContentAsBoolean();
+                    reader.ReadToFollowing("eros");
+                    eros = reader.ReadElementContentAsBoolean();
+                }
+                //if it doesn't work
+                catch
+                {
+                    //tell the user
+                    Console.WriteLine("Save data corrupted!");
+                    Console.WriteLine("Try checking the file for spelling errors or formatting inconsistencies.");
+                    return false;
+                }
+                //if it did work, load the data into the game state variables
+                _playerName = playerName;
+                return true;
             }
-            //TODO: actually create the loader so data can be saved
-            //OHNO: all my code was deleted because i was an idiot, sorry
-            //guess i will just start over and rewrite this all from scratch
             return false;
         }
     }
