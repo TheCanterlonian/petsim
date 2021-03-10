@@ -238,6 +238,65 @@ namespace petsimGeneralTools
             }
             return false;
         }
+        //getters
+        public string GetPlayerName()
+        {
+            return _playerName;
+        }
+        public int GetNumberOfPets()
+        {
+            return _numberOfPets;
+        }
+        public string GetPronounPosessive()
+        {
+            return _pronounPosessive;
+        }
+        public string GetPronounObjective()
+        {
+            return _pronounObjective;
+        }
+        public string GetPronounSubjective()
+        {
+            return _pronounSubjective;
+        }
+        public bool GetSeenIntro()
+        {
+            return _seenIntro;
+        }
+        public bool GetEros()
+        {
+            return _eros;
+        }
+        //setters
+        public void SetPlayerName(string name)
+        {
+            _playerName = name;
+        }
+        public void SetNumberOfPets(int pets)
+        {
+            _numberOfPets = pets;
+        }
+        public void SetPronounPosessive(string pp)
+        {
+            _pronounPosessive = pp;
+        }
+        public void SetPronounObjective(string op)
+        {
+            _pronounObjective = op;
+        }
+        public void SetPronounSubjective( string sp)
+        {
+            _pronounSubjective = sp;
+        }
+        public void SetSeenIntro(bool intro)
+        {
+            _seenIntro = intro;
+        }
+        public void SetEros(bool ero)
+        {
+            _eros = ero;
+        }
+        //those were expanded getters and setters, make the rest of them one-liners
     }
     //class for  high level data processing tools
     public class DataProcessingToolsHigh
