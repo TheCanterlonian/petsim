@@ -456,6 +456,11 @@ namespace petsimGeneralTools
             //if it doesn't fail, return that it completed correctly
             return true;
         }
+        //low level game saving (returns true if successful)
+        public static bool gameSaver(string fileToSaveTo)
+        {
+            //
+        }
         //lists files in given directory
         public static string filesInDirectoryListGetter(string directoryToListFilesIn)
         {
