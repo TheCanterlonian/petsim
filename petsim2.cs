@@ -23,9 +23,22 @@ namespace petsim2
     //class for early pre-game menus
     public class Program
     {
+        //set up a boolean to track if the program is graphical or not
+        private static bool _isGraphical;
+        //create setter and getter for this (delete setter if never used in the rest of development)
+        public static bool checkIsGraphical()
+        {
+            return _isGraphical;
+        }
+        public static void assignIsGraphical(bool graphicalSetting)
+        {
+            _isGraphical = graphicalSetting;
+        }
         //program entry point
         public static void Main(string[] args)
         {
+            //initializae graphical setting
+            _isGraphical = false;
             //for every argument
             for (int i = 0; i < args.Length; i++)
             {
@@ -36,12 +49,13 @@ namespace petsim2
             if (args.Contains("c"))
             {
                 //start the CLI
-                CLImenu();
+                GameMenus.CLImenu();
             }
             //see if user wants to start the GUI instantly
             if (args.Contains("g"))
             {
                 //start the GUI
+                _isGraphical = true;
                 petsimGraphicalTools.PreGraphicalOperations.graphicalStartup();
             }
             //rootMenu(); //uncomment this on release
@@ -63,13 +77,14 @@ namespace petsim2
                 if (chosenMenuOption == 1)
                 {
                     //start the GUI
+                    _isGraphical = true;
                     petsimGraphicalTools.PreGraphicalOperations.graphicalStartup();
                 }
                 //if the user chose to open the CLI
                 else if (chosenMenuOption == 2)
                 {
                     //start the CLI
-                    CLImenu();
+                    GameMenus.CLImenu();
                 }
                 //if the user chose to quit
                 else
@@ -79,6 +94,11 @@ namespace petsim2
                 }
             }
         }
+        
+    }
+    //class for in-game menus
+    public class GameMenus
+    {
         //command line interface menu
         public static void CLImenu()
         {
@@ -97,8 +117,15 @@ namespace petsim2
                     {
                         //load with the profile accessor
                         petsimGeneralTools.GameStateTools.profileAccessor(fileThatWillBeLoaded);
+                        //start the game manager menu
+                        managerMenu();
                     }
-                    //load save file
+                    //otherwise
+                    else
+                    {
+                        //tell the user that the process has been abandoned
+                        Console.WriteLine("Aborting...");
+                    }
                 }
                 else if (chosenMenuOption == 2)
                 {
@@ -115,6 +142,12 @@ namespace petsim2
                         //delete save file
                         petsimGeneralTools.FilesystemEditingAndAltering.fileDeleter(fileThatIsToBeDeleted);
                     }
+                    //otherwise
+                    else
+                    {
+                        //tell the user that the process has been abandoned
+                        Console.WriteLine("Aborting...");
+                    }
                 }
                 else if (chosenMenuOption == 4)
                 {
@@ -127,8 +160,53 @@ namespace petsim2
                 }
             }
         }
+        //management menu
+        public static void managerMenu()
+        {
+            //get graphical status
+            bool graphicsUp = Program.checkIsGraphical();
+            //if the game is graphical
+            if(graphicsUp == true)
+            {
+                //do graphics stuff
+            }
+            else
+            {
+                //hold menu open
+                while(true)
+                {
+                    //print manager menu and wait for answer
+                    petsimConsoleTools.ConsoleOutputGiving.menuCreator(petsimGeneralTools.StaticReturns.stringArrayReturn(3));
+                    int managerMenuOption = petsimConsoleTools.ConsoleInputGrabbingLow.answerHandlerMultipleChoice(6);
+                    //user choices
+                    if(managerMenuOption == 1)
+                    {
+                        //
+                    }
+                    if(managerMenuOption == 2)
+                    {
+                        //
+                    }
+                    if(managerMenuOption == 3)
+                    {
+                        //
+                    }
+                    if(managerMenuOption == 4)
+                    {
+                        //
+                    }
+                    if(managerMenuOption == 5)
+                    {
+                        //
+                    }
+                    else
+                    {
+                        //check if the user is sure about exiting the game
+                    }
+                }
+            }
+        }
     }
-    //class for what
     /*
     The classes below contain primitive methods for handling simple tasks.
     There are things that need to be created that have not yet been created listed here in order of importance.
@@ -458,7 +536,7 @@ namespace petsimGeneralTools
             string[] illegalFilenameStrings = {"error", "petsim.", "init", "template", ".vscode", ".cs", ".gitignore", "LICENSE", "favicon.ico", "README.md", "iconSmall.ico", "iconLarge.png"}; //0
             string[] mainMenuArray = {"petsim menu", "1. start gui", "2. start cli", "3. quit"}; //1
             string[] CLImenuArray = {"petsim command line interface", "1. load save file", "2. create save file", "3. delete save file", "4. list files in working directory", "5. go back to previous menu"};//2
-            string[] otherMenuArray = {"one", "two"}; //3
+            string[] managerMenuArray = {"petsim manager", "1. Pets", "2. Adoption", "3. Information", "4. Profile", "5. Save Game", "6. Exit Game"}; //3
             //array returns
             if (arrayToReturn == 0)
             {
@@ -471,6 +549,10 @@ namespace petsimGeneralTools
             if (arrayToReturn == 2)
             {
                 return CLImenuArray;
+            }
+            if (arrayToReturn == 3)
+            {
+                return managerMenuArray;
             }
             //if array asked for doesn't exist
             else
@@ -841,6 +923,8 @@ namespace petsimGraphicalTools
             //run the application
             Application.Run();
             //when the form exits
+            petsim2.Program.assignIsGraphical(false);
+            //return control to the console interface if called from there, otherwise just exit
             return;
         }
     }
