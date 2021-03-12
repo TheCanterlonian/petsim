@@ -29,6 +29,9 @@ To run it using dotnet: https://dotnet.microsoft.com/download
 <br>
 To run it using mono: https://www.mono-project.com/download/stable/
 <br>
-If you have trouble figuring out what to do, there is a visual walkthrough in here:
+If you have trouble figuring out what to do, there is a visual walkthrough here: https://github.com/TheCanterlonian/petsim/tree/master/guide
+<br>
 <br>
 Personally, i use both dotnet and mono on multiple distributions of gnu linux, however i can not currently test it on any other Operating System at the moment. If you have tried to compile and run it on another Operating System, please let me know if it works or not.
+<br>
+<br>
