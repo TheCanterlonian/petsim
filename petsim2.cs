@@ -118,7 +118,7 @@ namespace petsim2
                         //load with the profile accessor
                         petsimGeneralTools.GameStateTools.profileAccessor(fileThatWillBeLoaded);
                         //start the game manager menu
-                        managerMenu();
+                        managerMenu(fileThatWillBeLoaded);
                     }
                     //otherwise
                     else
@@ -161,7 +161,7 @@ namespace petsim2
             }
         }
         //management menu
-        public static void managerMenu()
+        public static void managerMenu(string fileThatIsCurrentlyLoaded)
         {
             //get graphical status
             bool graphicsUp = Program.checkIsGraphical();
@@ -197,11 +197,22 @@ namespace petsim2
                     }
                     if(managerMenuOption == 5)
                     {
-                        //
+                        //tell the user that the game is being saved
+                        Console.WriteLine("\n+++++++++");
+                        Console.WriteLine("Saving...");
+                        //save the game variables to the save file
+                        //tell the user that the save has completed (if there's an error, ask to create a new file)
                     }
                     else
                     {
-                        //check if the user is sure about exiting the game
+                        //check if the user wants to exit the game
+                        bool exitGame = petsimConsoleTools.ConsoleInputGrabbingHigh.gameExitChecker();
+                        //if yes
+                        if(exitGame)
+                        {
+                            //exit the game
+                            return;
+                        }
                     }
                 }
             }
@@ -710,6 +721,43 @@ namespace petsimConsoleTools
             }
             //eited loop, return error
             return ("error");
+        }
+        //checks if the user is sure about exiting the game (returns true to exit the game, returns false to keep game open)
+        public static bool gameExitChecker()
+        {
+            //check if the user is sure about exiting the game
+            Console.Write("\n-------------------------------------------");
+            Console.Write("\nExit the game without saving, are you sure?");
+            bool surely = petsimConsoleTools.ConsoleInputGrabbingLow.answerHandlerYesOrNo();
+            //if yes
+            if(surely)
+            {
+                //check again just to be sure
+                Console.Write("\n===================================================");
+                Console.Write("\nAll unsaved progress will be lost if you leave now!");
+                Console.Write("\nAre you absolutely certainly sure that you wish to exit the game without saving?");
+                bool certainly = petsimConsoleTools.ConsoleInputGrabbingLow.answerHandlerYesOrNo();
+                //if the user is 100% sure
+                if (certainly)
+                {
+                    //exit the game
+                    return true;
+                }
+                //otherwise
+                else
+                {
+                    //abort
+                    Console.WriteLine("\nExit Aborted...");
+                    return false;
+                }
+            }
+            //otherwise
+            else
+            {
+                //abort
+                Console.WriteLine("\nExit Cancelled...");
+                return false;
+            }
         }
     }
     //class for grabbing low level inputs on the console
