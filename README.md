@@ -13,6 +13,7 @@ g - start the Graphical User Interface instantly
 # Filesystem Usage
 petsim uses the filesystem to save and load profiles and game state in the directory it is working in. There are a few files that are used by default, including:
 <br>
+<br>
 iconLarge.png - the large icon used by the GUI
 <br>
 iconSmall.ico - the small icon used by the GUI
