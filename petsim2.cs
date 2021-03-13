@@ -70,7 +70,7 @@ namespace petsim2
         {
             while(true)
             {
-                //print the main menu and ask get the user to select an option
+                //print the main menu and ask to get the user to select an option
                 petsimConsoleTools.ConsoleOutputGiving.menuCreator(petsimGeneralTools.StaticReturns.stringArrayReturn(1));
                 int chosenMenuOption = petsimConsoleTools.ConsoleInputGrabbingLow.answerHandlerMultipleChoice(3);
                 //if the user chose to open the GUI
@@ -120,8 +120,21 @@ namespace petsim2
                         //if the save file is not corrupted
                         if (saveFileLoadedCorrectly)
                         {
-                            //start the game manager menu
-                            managerMenu(fileThatWillBeLoaded);
+                            //check if the user has not yet seen the intro
+                            //if they have not
+                            if (!(petsimGeneralTools.GameStateTools.GetSeenIntro()))
+                            {
+                                //start the intro sequence
+                                introSequence();
+                                //start the game manager menu
+                                managerMenu(fileThatWillBeLoaded);
+                            }
+                            //if they have
+                            else
+                            {
+                                //start the game manager menu
+                                managerMenu(fileThatWillBeLoaded);
+                            }
                         }
                     }
                     //otherwise
@@ -199,19 +212,19 @@ namespace petsim2
                     //user choices
                     if(managerMenuOption == 1)
                     {
-                        //
+                        //pets
                     }
                     else if(managerMenuOption == 2)
                     {
-                        //
+                        //adoption
                     }
                     else if(managerMenuOption == 3)
                     {
-                        //
+                        //information
                     }
                     else if(managerMenuOption == 4)
                     {
-                        //
+                        //profile
                     }
                     else if(managerMenuOption == 5)
                     {
@@ -223,7 +236,7 @@ namespace petsim2
                         //if the saving was not successful
                         if (!(saveSucceeded))
                         {
-                            //
+                            //ask the user to create a new file
                         }
                         //if the save went well
                         else
@@ -235,17 +248,41 @@ namespace petsim2
                     }
                     else
                     {
+                        //temporarily is a variable printer for debug reasons
+                        petsimConsoleTools.ConsoleOutputGiving.variablePrinter();
                         //check if the user wants to exit the game
                         bool exitGame = petsimConsoleTools.ConsoleInputGrabbingHigh.gameExitChecker();
                         //if yes
                         if(exitGame)
                         {
-                            //temporarily is a variable printer for debug reasons
-                            petsimConsoleTools.ConsoleOutputGiving.variablePrinter();
                             //exit the game
                             return;
                         }
                     }
+                }
+            }
+        }
+        //introductory sequence
+        public static void introSequence()
+        {
+            //display intro text slowly
+            //create variable to determine when all the variables are set properly
+            bool allSetUp = false;
+            //create variables to track individual settings
+            bool nameSet = false;
+            bool pronounsSet = false;
+            //loop to ensure the user doesn't skip anything
+            while(!(allSetUp))
+            {
+                //loop to get the user's name
+                while(!(nameSet))
+                {
+                    //
+                }
+                //loop to get the user's pronouns
+                while(!(pronounsSet))
+                {
+                    //
                 }
             }
         }
@@ -284,7 +321,7 @@ namespace petsimGeneralTools
         public static bool profileAccessor(string filenameToLoadDataFrom)
         {
             //if this is the template file
-            if(DataProcessingToolsLow.illegalStringChecker(filenameToLoadDataFrom, 0, false))
+            if(DataProcessingTools.illegalStringChecker(filenameToLoadDataFrom, 0, false))
             {
                 //tell the user this is illegal
                 Console.WriteLine("Illegal file, can not load.");
@@ -424,13 +461,8 @@ namespace petsimGeneralTools
         }
         //those were expanded getters and setters, make the rest of them one-liners
     }
-    //class for  high level data processing tools
-    public class DataProcessingToolsHigh
-    {
-        //
-    }
-    //class for  low level data processing tools
-    public class DataProcessingToolsLow
+    //class for data processing tools
+    public class DataProcessingTools
     {
         //checks if a string is illegal (returns true if illegal)
         public static bool illegalStringChecker(string stringToCheck, int arrayToCheckIn, bool mustBeExactMatch)
@@ -589,7 +621,7 @@ namespace petsimGeneralTools
         public static bool fileDeleter(string chosenFileForDeleting)
         {
             //check for illegal files
-            if (DataProcessingToolsLow.illegalStringChecker(chosenFileForDeleting, 0, false))
+            if (DataProcessingTools.illegalStringChecker(chosenFileForDeleting, 0, false))
             {
                 //don't delete illegal files
                 return false;
@@ -843,7 +875,7 @@ namespace petsimConsoleTools
                     else
                     {
                         //check for illegal names
-                        if (petsimGeneralTools.DataProcessingToolsLow.illegalStringChecker(filenameToCreate, 0, false))
+                        if (petsimGeneralTools.DataProcessingTools.illegalStringChecker(filenameToCreate, 0, false))
                         {
                             //tell the user that this is not allowed
                             Console.WriteLine("Illegal filename.");
@@ -863,15 +895,15 @@ namespace petsimConsoleTools
         public static bool gameExitChecker()
         {
             //check if the user is sure about exiting the game
-            Console.Write("\n-------------------------------------------");
-            Console.Write("\nExit the game without saving, are you sure?");
+            Console.Write("\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            Console.Write("\n Exit the game without saving, are you sure?");
             bool surely = petsimConsoleTools.ConsoleInputGrabbingLow.answerHandlerYesOrNo();
             //if yes
             if(surely)
             {
                 //check again just to be sure
-                Console.Write("\n===================================================");
-                Console.Write("\nAll unsaved progress will be lost if you leave now!");
+                Console.Write("\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                Console.Write("\n   All unsaved progress will be lost if you leave now!");
                 Console.Write("\nAre you absolutely certainly sure that you wish to exit the game without saving?");
                 bool certainly = petsimConsoleTools.ConsoleInputGrabbingLow.answerHandlerYesOrNo();
                 //if the user is 100% sure
@@ -1093,6 +1125,8 @@ namespace petsimGraphicalTools
         public static void petsimGTKstartup()
         {
             //TODO: expand on this GTK form to make it more useful
+            //let the rest of the program know we're graphical now
+            petsim2.Program.assignIsGraphical(true);
             //initialization
             Application.Init();
             //set window properties
