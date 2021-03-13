@@ -201,7 +201,19 @@ namespace petsim2
                         Console.WriteLine("\n+++++++++");
                         Console.WriteLine("Saving...");
                         //save the game variables to the save file
-                        //tell the user that the save has completed (if there's an error, ask to create a new file)
+                        bool saveSucceeded = petsimGeneralTools.FilesystemEditingAndAltering.gameSaver(fileThatIsCurrentlyLoaded);
+                        //if the saving was not successful
+                        if (!(saveSucceeded))
+                        {
+                            //
+                        }
+                        //if the save went well
+                        else
+                        {
+                            //tell the user that the save has completed
+                            Console.WriteLine("+++++++++++++++++");
+                            Console.WriteLine("   GAME SAVED!");
+                        }
                     }
                     else
                     {
@@ -325,60 +337,60 @@ namespace petsimGeneralTools
             return false;
         }
         //getters
-        public string GetPlayerName()
+        public static string GetPlayerName()
         {
             return _playerName;
         }
-        public int GetNumberOfPets()
+        public static int GetNumberOfPets()
         {
             return _numberOfPets;
         }
-        public string GetPronounPosessive()
-        {
-            return _pronounPosessive;
-        }
-        public string GetPronounObjective()
-        {
-            return _pronounObjective;
-        }
-        public string GetPronounSubjective()
+        public static string GetPronounSubjective()
         {
             return _pronounSubjective;
         }
-        public bool GetSeenIntro()
+        public static string GetPronounObjective()
+        {
+            return _pronounObjective;
+        }
+        public static string GetPronounPosessive()
+        {
+            return _pronounPosessive;
+        }
+        public static bool GetSeenIntro()
         {
             return _seenIntro;
         }
-        public bool GetEros()
+        public static bool GetEros()
         {
             return _eros;
         }
         //setters
-        public void SetPlayerName(string name)
+        public static void SetPlayerName(string name)
         {
             _playerName = name;
         }
-        public void SetNumberOfPets(int pets)
+        public static void SetNumberOfPets(int pets)
         {
             _numberOfPets = pets;
         }
-        public void SetPronounPosessive(string pp)
-        {
-            _pronounPosessive = pp;
-        }
-        public void SetPronounObjective(string op)
-        {
-            _pronounObjective = op;
-        }
-        public void SetPronounSubjective( string sp)
+        public static void SetPronounSubjective( string sp)
         {
             _pronounSubjective = sp;
         }
-        public void SetSeenIntro(bool intro)
+        public static void SetPronounObjective(string op)
+        {
+            _pronounObjective = op;
+        }
+        public static void SetPronounPosessive(string pp)
+        {
+            _pronounPosessive = pp;
+        }
+        public static void SetSeenIntro(bool intro)
         {
             _seenIntro = intro;
         }
-        public void SetEros(bool ero)
+        public static void SetEros(bool ero)
         {
             _eros = ero;
         }
@@ -456,10 +468,71 @@ namespace petsimGeneralTools
             //if it doesn't fail, return that it completed correctly
             return true;
         }
-        //low level game saving (returns true if successful)
+        //low level game saving (doesn't perform any checks on the file, returns true if successful)
         public static bool gameSaver(string fileToSaveTo)
         {
-            //
+            //grab the values of all the game state variables
+            string currentName = GameStateTools.GetPlayerName();
+            int currentNumberOfPets = GameStateTools.GetNumberOfPets();
+            string cps = GameStateTools.GetPronounSubjective();
+            string cpo = GameStateTools.GetPronounObjective();
+            string cpp = GameStateTools.GetPronounPosessive();
+            bool introSeenStatus = GameStateTools.GetSeenIntro();
+            bool erostatus = GameStateTools.GetEros();
+            //try to save to the save file
+            try
+            {
+                //create an xml writer for the file that we're saving to
+                XmlTextWriter textWriter = new XmlTextWriter(fileToSaveTo, null);
+                //start the document
+                textWriter.WriteStartDocument();
+                    //start the save data
+                    textWriter.WriteStartElement("data");
+                        //start the profile
+                        textWriter.WriteStartElement("profile");
+                            //start the player name
+                            textWriter.WriteStartElement("playerName");
+                                //write the player name
+                                textWriter.WriteString(currentName);
+                            //end the player name
+                            textWriter.WriteEndElement();
+                            //you got the hang of this already, it's the same all the way down
+                            textWriter.WriteStartElement("numberOfPets");
+                                textWriter.WriteString(currentNumberOfPets.ToString());
+                            textWriter.WriteEndElement();
+                            textWriter.WriteStartElement("pronounSubjective");
+                                textWriter.WriteString(cps);
+                            textWriter.WriteEndElement();
+                            textWriter.WriteStartElement("pronounObjective");
+                                textWriter.WriteString(cpo);
+                            textWriter.WriteEndElement();
+                            textWriter.WriteStartElement("pronounPosessive");
+                                textWriter.WriteString(cpp);
+                            textWriter.WriteEndElement();
+                            textWriter.WriteStartElement("seenIntro");
+                                textWriter.WriteString(introSeenStatus.ToString());
+                            textWriter.WriteEndElement();
+                            textWriter.WriteStartElement("eros");
+                                textWriter.WriteString(erostatus.ToString());
+                            textWriter.WriteEndElement();
+                            //glad we're done with that
+                        //end the profile
+                        textWriter.WriteEndElement();
+                    //end the save data
+                    textWriter.WriteEndElement();
+                //end the document
+                textWriter.WriteEndDocument();
+                //don't forget to close the streams
+                textWriter.Close();
+            }
+            //if you can't save anything
+            catch
+            {
+                //return unsuccessful
+                return false;
+            }
+            //if successful, return that
+            return true;
         }
         //lists files in given directory
         public static string filesInDirectoryListGetter(string directoryToListFilesIn)
@@ -535,13 +608,23 @@ namespace petsimGeneralTools
             //string returns
             if (stringToReturn == 0)
             {
+                //data or creating a new profile (used in creating the template file as well)
                 return("<data>\n    <profile>\n        <playerName>unknown</playerName>\n        <numberOfPets>0</numberOfPets>\n        <pronounSubjective>unknown</pronounSubjective>\n        <pronounObjective>unknown</pronounObjective>\n        <pronounPosessive>unknown</pronounPosessive>\n        <seenIntro>false</seenIntro>\n        <eros>false</eros>\n    </profile>\n</data>\n");
+                //0
+            }
+            if (stringToReturn == 1)
+            {
+                //intro text (used for the first scene in the game)
+                ("");
+                //1
             }
             //if set asked for doesn't exist
             else
             {
+                //tell the user they fucked up
                 Console.WriteLine("unknown string was called");
                 return("error");
+                //-1
             }
         }
         //data for string array returning (for long string arrays)
