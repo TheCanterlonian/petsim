@@ -169,8 +169,7 @@ namespace petsim2
                 {
                     //list files in working directory
                     Console.Write(petsimGeneralTools.FilesystemEditingAndAltering.filesInDirectoryListGetter(Directory.GetCurrentDirectory()));
-                    //temporarily is the variable printer for debug reasons
-                    Console.WriteLine("==============================================================");
+                    //temporarily is a variable printer for debug reasons
                     petsimConsoleTools.ConsoleOutputGiving.variablePrinter();
                 }
                 else
@@ -202,19 +201,19 @@ namespace petsim2
                     {
                         //
                     }
-                    if(managerMenuOption == 2)
+                    else if(managerMenuOption == 2)
                     {
                         //
                     }
-                    if(managerMenuOption == 3)
+                    else if(managerMenuOption == 3)
                     {
                         //
                     }
-                    if(managerMenuOption == 4)
+                    else if(managerMenuOption == 4)
                     {
                         //
                     }
-                    if(managerMenuOption == 5)
+                    else if(managerMenuOption == 5)
                     {
                         //tell the user that the game is being saved
                         Console.WriteLine("\n+++++++++");
@@ -241,6 +240,8 @@ namespace petsim2
                         //if yes
                         if(exitGame)
                         {
+                            //temporarily is a variable printer for debug reasons
+                            petsimConsoleTools.ConsoleOutputGiving.variablePrinter();
                             //exit the game
                             return;
                         }
@@ -761,6 +762,8 @@ namespace petsimConsoleTools
         //variable printer (prints out all game state variables as they currently are) THIS IS A DEBUG METHOD
         public static void variablePrinter()
         {
+            //make sepperator
+            Console.WriteLine("==============================================================");
             //grab the values of all the game state variables
             string currentName = petsimGeneralTools.GameStateTools.GetPlayerName();
             int currentNumberOfPets = petsimGeneralTools.GameStateTools.GetNumberOfPets();
