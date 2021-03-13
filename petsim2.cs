@@ -116,9 +116,13 @@ namespace petsim2
                     if (!(fileThatWillBeLoaded==("error")))
                     {
                         //load with the profile accessor
-                        petsimGeneralTools.GameStateTools.profileAccessor(fileThatWillBeLoaded);
-                        //start the game manager menu
-                        managerMenu(fileThatWillBeLoaded);
+                        bool saveFileLoadedCorrectly = petsimGeneralTools.GameStateTools.profileAccessor(fileThatWillBeLoaded);
+                        //if the save file is not corrupted
+                        if (saveFileLoadedCorrectly)
+                        {
+                            //start the game manager menu
+                            managerMenu(fileThatWillBeLoaded);
+                        }
                     }
                     //otherwise
                     else
@@ -130,7 +134,19 @@ namespace petsim2
                 else if (chosenMenuOption == 2)
                 {
                     //create the save file
-                    petsimGeneralTools.FilesystemEditingAndAltering.newProfileCreator(petsimConsoleTools.ConsoleInputGrabbingHigh.fileNameInputGetter(false, false));
+                    bool saveFileCreation = petsimGeneralTools.FilesystemEditingAndAltering.newProfileCreator(petsimConsoleTools.ConsoleInputGrabbingHigh.fileNameInputGetter(false, false));
+                    //if the file was created
+                    if(saveFileCreation)
+                    {
+                        //tell the user
+                        Console.WriteLine("File created, load it to start the game.");
+                    }
+                    //otherwise
+                    else
+                    {
+                        //tell the user of the problem
+                        Console.WriteLine("File not created, check permissions.");
+                    }
                 }
                 else if (chosenMenuOption == 3)
                 {
@@ -153,6 +169,9 @@ namespace petsim2
                 {
                     //list files in working directory
                     Console.Write(petsimGeneralTools.FilesystemEditingAndAltering.filesInDirectoryListGetter(Directory.GetCurrentDirectory()));
+                    //temporarily is the variable printer for debug reasons
+                    Console.WriteLine("==============================================================");
+                    petsimConsoleTools.ConsoleOutputGiving.variablePrinter();
                 }
                 else
                 {
@@ -263,6 +282,14 @@ namespace petsimGeneralTools
         //profile loader (returns true if successful)
         public static bool profileAccessor(string filenameToLoadDataFrom)
         {
+            //if this is the template file
+            if(DataProcessingToolsLow.illegalStringChecker(filenameToLoadDataFrom, 0, false))
+            {
+                //tell the user this is illegal
+                Console.WriteLine("Illegal file, can not load.");
+                //don't load it
+                return false;
+            }
             //assign the save file's content to a string variable
             string saveFileData = File.ReadAllText(filenameToLoadDataFrom);
             //trim the data of whitespace at the beginning and end
@@ -297,7 +324,7 @@ namespace petsimGeneralTools
                 try
                 {
                     //create an xml reader for the file that we're loading from
-                    using var reader = XmlReader.Create(filenameToLoadDataFrom);
+                    using XmlReader reader = XmlReader.Create(filenameToLoadDataFrom);
                     //load primary data
                     reader.ReadToFollowing("playerName");
                     playerName = reader.ReadElementContentAsString();
@@ -479,46 +506,51 @@ namespace petsimGeneralTools
             string cpp = GameStateTools.GetPronounPosessive();
             bool introSeenStatus = GameStateTools.GetSeenIntro();
             bool erostatus = GameStateTools.GetEros();
+            //convert the booleans to strings
+            string introSeenStatusBetter = introSeenStatus.ToString();
+            string erostatusBetter = erostatus.ToString();
+            //convert the boolean strings to lowercase
+            introSeenStatusBetter = introSeenStatusBetter.ToLower();
+            erostatusBetter = erostatusBetter.ToLower();
             //try to save to the save file
             try
             {
                 //create an xml writer for the file that we're saving to
                 XmlTextWriter textWriter = new XmlTextWriter(fileToSaveTo, null);
+                //set the indentation
+                textWriter.Formatting = Formatting.Indented;
+                textWriter.Indentation = 4;
                 //start the document
                 textWriter.WriteStartDocument();
-                    //start the save data
-                    textWriter.WriteStartElement("data");
-                        //start the profile
-                        textWriter.WriteStartElement("profile");
-                            //start the player name
-                            textWriter.WriteStartElement("playerName");
-                                //write the player name
-                                textWriter.WriteString(currentName);
-                            //end the player name
-                            textWriter.WriteEndElement();
-                            //you got the hang of this already, it's the same all the way down
-                            textWriter.WriteStartElement("numberOfPets");
-                                textWriter.WriteString(currentNumberOfPets.ToString());
-                            textWriter.WriteEndElement();
-                            textWriter.WriteStartElement("pronounSubjective");
-                                textWriter.WriteString(cps);
-                            textWriter.WriteEndElement();
-                            textWriter.WriteStartElement("pronounObjective");
-                                textWriter.WriteString(cpo);
-                            textWriter.WriteEndElement();
-                            textWriter.WriteStartElement("pronounPosessive");
-                                textWriter.WriteString(cpp);
-                            textWriter.WriteEndElement();
-                            textWriter.WriteStartElement("seenIntro");
-                                textWriter.WriteString(introSeenStatus.ToString());
-                            textWriter.WriteEndElement();
-                            textWriter.WriteStartElement("eros");
-                                textWriter.WriteString(erostatus.ToString());
-                            textWriter.WriteEndElement();
-                            //glad we're done with that
-                        //end the profile
+                    //start the profile
+                    textWriter.WriteStartElement("profile");
+                        //start the player name
+                        textWriter.WriteStartElement("playerName");
+                            //write the player name
+                            textWriter.WriteString(currentName);
+                        //end the player name
                         textWriter.WriteEndElement();
-                    //end the save data
+                        //you got the hang of this already, it's the same all the way down
+                        textWriter.WriteStartElement("numberOfPets");
+                            textWriter.WriteString(currentNumberOfPets.ToString());
+                        textWriter.WriteEndElement();
+                        textWriter.WriteStartElement("pronounSubjective");
+                            textWriter.WriteString(cps);
+                        textWriter.WriteEndElement();
+                        textWriter.WriteStartElement("pronounObjective");
+                            textWriter.WriteString(cpo);
+                        textWriter.WriteEndElement();
+                        textWriter.WriteStartElement("pronounPosessive");
+                            textWriter.WriteString(cpp);
+                        textWriter.WriteEndElement();
+                        textWriter.WriteStartElement("seenIntro");
+                            textWriter.WriteString(introSeenStatusBetter);
+                        textWriter.WriteEndElement();
+                        textWriter.WriteStartElement("eros");
+                            textWriter.WriteString(erostatusBetter);
+                        textWriter.WriteEndElement();
+                        //glad we're done with that
+                    //end the profile
                     textWriter.WriteEndElement();
                 //end the document
                 textWriter.WriteEndDocument();
@@ -608,14 +640,14 @@ namespace petsimGeneralTools
             //string returns
             if (stringToReturn == 0)
             {
-                //data or creating a new profile (used in creating the template file as well)
-                return("<data>\n    <profile>\n        <playerName>unknown</playerName>\n        <numberOfPets>0</numberOfPets>\n        <pronounSubjective>unknown</pronounSubjective>\n        <pronounObjective>unknown</pronounObjective>\n        <pronounPosessive>unknown</pronounPosessive>\n        <seenIntro>false</seenIntro>\n        <eros>false</eros>\n    </profile>\n</data>\n");
+                //data for creating a new profile (used in creating the template file as well)
+                return("<profile>\n    <playerName>unknown</playerName>\n    <numberOfPets>0</numberOfPets>\n    <pronounSubjective>unknown</pronounSubjective>\n    <pronounObjective>unknown</pronounObjective>\n    <pronounPosessive>unknown</pronounPosessive>\n    <seenIntro>false</seenIntro>\n    <eros>false</eros>\n</profile>\n");
                 //0
             }
             if (stringToReturn == 1)
             {
                 //intro text (used for the first scene in the game)
-                ("");
+                return("intro text here");
                 //1
             }
             //if set asked for doesn't exist
@@ -725,6 +757,20 @@ namespace petsimConsoleTools
                 Console.WriteLine(linesForMenu[i]);
             }
             Console.Write("\n");
+        }
+        //variable printer (prints out all game state variables as they currently are) THIS IS A DEBUG METHOD
+        public static void variablePrinter()
+        {
+            //grab the values of all the game state variables
+            string currentName = petsimGeneralTools.GameStateTools.GetPlayerName();
+            int currentNumberOfPets = petsimGeneralTools.GameStateTools.GetNumberOfPets();
+            string cps = petsimGeneralTools.GameStateTools.GetPronounSubjective();
+            string cpo = petsimGeneralTools.GameStateTools.GetPronounObjective();
+            string cpp = petsimGeneralTools.GameStateTools.GetPronounPosessive();
+            bool introSeenStatus = petsimGeneralTools.GameStateTools.GetSeenIntro();
+            bool erostatus = petsimGeneralTools.GameStateTools.GetEros();
+            //print them all out
+            Console.WriteLine(currentName + "\n" + currentNumberOfPets.ToString() + "\n" + cps + "\n" + cpo + "\n" + cpp + "\n" + introSeenStatus.ToString() + "\n" + erostatus.ToString());
         }
     }
     //class for grabbing higher level inputs on the console
