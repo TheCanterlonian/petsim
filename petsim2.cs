@@ -62,7 +62,7 @@ namespace petsim2
             /*
             testing stuff, (change this for release,) put tests below here
             */
-            //GameMenus.introSequence(); //test this when it's done
+            GameMenus.introSequence(); //test this when it's done
             //petsimConsoleTools.ConsoleOutputGiving.dialoguePrinter(petsimGeneralTools.StaticReturns.stringReturn(1),50);
             //Console.WriteLine(petsimGeneralTools.StaticReturns.dialogueLibrary(12));
             return;
@@ -267,26 +267,14 @@ namespace petsim2
         //introductory sequence
         public static void introSequence()
         {
-            //display intro text slowly
-            //create variable to determine when all the variables are set properly
-            bool allSetUp = false;
-            //create variables to track individual settings
-            bool nameSet = false;
-            bool pronounsSet = false;
-            //loop to ensure the user doesn't skip anything
-            while(!(allSetUp))
-            {
-                //loop to get the user's name
-                while(!(nameSet))
-                {
-                    //
-                }
-                //loop to get the user's pronouns
-                while(!(pronounsSet))
-                {
-                    //
-                }
-            }
+            //ask the user for name and pronouns
+            Console.WriteLine(petsimGeneralTools.StaticReturns.stringReturn(1));
+            //get the user's name
+            string usernameToPlace = petsimConsoleTools.ConsoleInputGrabbingHigh.usernameGrabber();
+            //set it to the current username
+            petsimGeneralTools.GameStateTools.SetPlayerName(usernameToPlace);
+            //get the user's pronouns
+            //save the game
         }
     }
     /*
@@ -678,7 +666,19 @@ namespace petsimGeneralTools
             //intro text (used for the first scene in the game)
             if (stringToReturn == 1)
             {
-                return("place text string here");
+                return("Identity Registration Process:\nPlease enter your name and pronouns at the respective prompts to continue.\nType your answer to the following questions at each prompt,\nthen hit the [ENTER] key or the [RETURN] key to confirm.");
+            }
+            if (stringToReturn == 2)
+            {
+                return("Your name please:");
+            }
+            if (stringToReturn == 3)
+            {
+                return("Your current name is:");
+            }
+            if (stringToReturn == 4)
+            {
+                return("Do you wish to change it?");
             }
             //if set asked for doesn't exist
             else
@@ -698,7 +698,7 @@ namespace petsimGeneralTools
             string[] mainMenuArray = {"petsim menu", "1. start gui", "2. start cli", "3. quit"}; //1
             string[] CLImenuArray = {"petsim command line interface", "1. load save file", "2. create save file", "3. delete save file", "4. list files in working directory", "5. go back to previous menu"};//2
             string[] managerMenuArray = {"petsim manager", "1. Pets", "2. Adoption", "3. Information", "4. Profile", "5. Save Game", "6. Exit Game"}; //3
-            string[] characterNames = {"Erika","Aloe"}; //4
+            string[] characterNames = {"Aloe"}; //4
             //array returns
             if (arrayToReturn == 0)
             {
@@ -730,6 +730,8 @@ namespace petsimGeneralTools
         //dialogue selector (line numbers start counting at one, zero means "select a random line from this scene")
         public static string dialogueSelector(string characterSpeaking, string scene, int lineNumber)
         {
+            return "error";
+            /*
             //player lines
             if(characterSpeaking == "player")
             {
@@ -745,6 +747,7 @@ namespace petsimGeneralTools
             {
                 //
             }
+            */
         }
         //dialogue library (starts counting at zero which is assigned to the first line in the file)
         public static string dialogueLibrary(int lineToReturn)
@@ -877,6 +880,29 @@ namespace petsimConsoleTools
     //class for grabbing higher level inputs on the console
     public class ConsoleInputGrabbingHigh
     {
+        //user name handler
+        public static string usernameGrabber()
+        {
+            //loop to make sure it's done correctly
+            while(true)
+            {
+                //ask user for name
+                Console.Write("\n" + petsimGeneralTools.StaticReturns.stringReturn(2) + " ");
+                //take the name in
+                string userNameToAssign = petsimConsoleTools.ConsoleInputGrabbingLow.stringInputGetter(true, false);
+                //check if the user is sure of their name
+                Console.WriteLine("");
+                Console.WriteLine("\n" + petsimGeneralTools.StaticReturns.stringReturn(3) + " " + userNameToAssign);
+                Console.WriteLine(petsimGeneralTools.StaticReturns.stringReturn(4));
+                bool changeMind = ConsoleInputGrabbingLow.answerHandlerYesOrNo();
+                //if they like their decision
+                if (!(changeMind))
+                {
+                    //return it
+                    return userNameToAssign;
+                }
+            }
+        }
         //filename handler
         public static string fileNameInputGetter(bool existing, bool deletionSake)
         {
