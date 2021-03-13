@@ -58,13 +58,20 @@ namespace petsim2
                 _isGraphical = true;
                 petsimGraphicalTools.PreGraphicalOperations.graphicalStartup();
             }
-            //rootMenu(); //uncomment this on release
+            //GameMenus.rootMenu(); //uncomment this on release
             /*
             testing stuff, (change this for release,) put tests below here
             */
-            rootMenu();
+            //GameMenus.introSequence(); //test this when it's done
+            //petsimConsoleTools.ConsoleOutputGiving.dialoguePrinter(petsimGeneralTools.StaticReturns.stringReturn(1),50);
+            //Console.WriteLine(petsimGeneralTools.StaticReturns.dialogueLibrary(12));
             return;
         }
+        
+    }
+    //class for in-game menus
+    public class GameMenus
+    {
         //main menu
         public static void rootMenu()
         {
@@ -77,14 +84,14 @@ namespace petsim2
                 if (chosenMenuOption == 1)
                 {
                     //start the GUI
-                    _isGraphical = true;
+                    Program.assignIsGraphical(true);
                     petsimGraphicalTools.PreGraphicalOperations.graphicalStartup();
                 }
                 //if the user chose to open the CLI
                 else if (chosenMenuOption == 2)
                 {
                     //start the CLI
-                    GameMenus.CLImenu();
+                    CLImenu();
                 }
                 //if the user chose to quit
                 else
@@ -94,11 +101,6 @@ namespace petsim2
                 }
             }
         }
-        
-    }
-    //class for in-game menus
-    public class GameMenus
-    {
         //command line interface menu
         public static void CLImenu()
         {
@@ -236,7 +238,7 @@ namespace petsim2
                         //if the saving was not successful
                         if (!(saveSucceeded))
                         {
-                            //ask the user to create a new file
+                            //TODO: ask the user to create a new file
                         }
                         //if the save went well
                         else
@@ -291,14 +293,12 @@ namespace petsim2
     The classes below contain primitive methods for handling simple tasks.
     There are things that need to be created that have not yet been created listed here in order of importance.
     The functions still yet to be implemented are as follows:
-    0. a data return function to read data from a file of defaults and return the set asked for (for new profile data creation)
     1. fix the console menu creator (petsimConsoleTools.ConsoleOutputGiving.menuCreator(string[]);) it currently ASSUMES element 0 exists
     2. a class for runtime stuff
-    3. a class for console interaction (high level in & out)
-    4. a background processor for the gui
-    5. credits/about box (both console and gui readable)
-    6. async stuff to run the game while the interface is open
-    7. pay a Xamarin developer to make a GUI for me
+    3. a background processor for the gui
+    4. credits/about box (both console and gui readable)
+    5. async stuff to run the game while the interface is open
+    6. pay a Xamarin developer to make a GUI for me
     */
 }
 /*
@@ -670,18 +670,15 @@ namespace petsimGeneralTools
         //data for string returning (for long strings)
         public static string stringReturn(int stringToReturn)
         {
-            //string returns
+            //data for creating a new profile (used in creating the template file as well)
             if (stringToReturn == 0)
             {
-                //data for creating a new profile (used in creating the template file as well)
                 return("<profile>\n    <playerName>unknown</playerName>\n    <numberOfPets>0</numberOfPets>\n    <pronounSubjective>unknown</pronounSubjective>\n    <pronounObjective>unknown</pronounObjective>\n    <pronounPosessive>unknown</pronounPosessive>\n    <seenIntro>false</seenIntro>\n    <eros>false</eros>\n</profile>\n");
-                //0
             }
+            //intro text (used for the first scene in the game)
             if (stringToReturn == 1)
             {
-                //intro text (used for the first scene in the game)
-                return("intro text here");
-                //1
+                return("place text string here");
             }
             //if set asked for doesn't exist
             else
@@ -697,10 +694,11 @@ namespace petsimGeneralTools
         {
             //set all the arrays to their proper values
             string [] unknownArray = {"error", "unknown array"}; //-1
-            string[] illegalFilenameStrings = {"error", "petsim.", "init", "template", ".vscode", ".cs", ".gitignore", "LICENSE", "favicon.ico", "README.md", "iconSmall.ico", "iconLarge.png"}; //0
+            string[] illegalFilenameStrings = {"error", "petsim.", "design diagram ", "design.drawio", ".png", "visual guide (download and extract me).zip", "template", ".vscode", ".cs", ".gitignore", "LICENSE", "favicon.ico", "README.md", "iconSmall.ico", "iconLarge.png", "petsimlines.txt"}; //0
             string[] mainMenuArray = {"petsim menu", "1. start gui", "2. start cli", "3. quit"}; //1
             string[] CLImenuArray = {"petsim command line interface", "1. load save file", "2. create save file", "3. delete save file", "4. list files in working directory", "5. go back to previous menu"};//2
             string[] managerMenuArray = {"petsim manager", "1. Pets", "2. Adoption", "3. Information", "4. Profile", "5. Save Game", "6. Exit Game"}; //3
+            string[] characterNames = {"Erika","Aloe"}; //4
             //array returns
             if (arrayToReturn == 0)
             {
@@ -718,12 +716,43 @@ namespace petsimGeneralTools
             {
                 return managerMenuArray;
             }
+            if (arrayToReturn == 4)
+            {
+                return characterNames;
+            }
             //if array asked for doesn't exist
             else
             {
                 Console.WriteLine("unknown array was called");
                 return unknownArray;
             }
+        }
+        //dialogue selector (line numbers start counting at one, zero means "select a random line from this scene")
+        public static string dialogueSelector(string characterSpeaking, string scene, int lineNumber)
+        {
+            //player lines
+            if(characterSpeaking == "player")
+            {
+                //
+            }
+            //Aloe lines
+            else if(characterSpeaking == "Aloe")
+            {
+                //
+            }
+            //unknown character
+            else
+            {
+                //
+            }
+        }
+        //dialogue library (starts counting at zero which is assigned to the first line in the file)
+        public static string dialogueLibrary(int lineToReturn)
+        {
+            //grab the line requested from the file
+            string lineFromFile = File.ReadLines("petsimlines.txt").Skip(lineToReturn).Take(1).First();
+            //return the line
+            return lineFromFile;
         }
     }
     //class for processing tasks performed asynchronously
@@ -790,6 +819,43 @@ namespace petsimConsoleTools
                 Console.WriteLine(linesForMenu[i]);
             }
             Console.Write("\n");
+        }
+        //dialogue printer [first overload] (prints text out slowly or super slowly)
+        public static void dialoguePrinter(string dialogueToPrintFirst, bool superslow)
+        {
+            //convert to char array
+            char[] convertedFirst = dialogueToPrintFirst.ToCharArray();
+            //loop to print each character
+            for (int i = 0; i < convertedFirst.Length; i++)
+            {
+                //print a character
+                Console.Write(convertedFirst[i]);
+                //if set to super slow printing
+                if(superslow)
+                {
+                    //super slow text speed
+                    Thread.Sleep(100);
+                }
+                //otherwise
+                else
+                {
+                    //normal slow text speed
+                    Thread.Sleep(50);
+                }
+            }
+        }
+        //dialogue printer [second overload] (prints text out at a specified rate)
+        public static void dialoguePrinter(string dialogueToPrintSecond, int millisecondsToWaitBeforePrintingNextCharacter)
+        {
+            //convert to char array
+            char[] convertedSecond = dialogueToPrintSecond.ToCharArray();
+            //loop to print each character
+            for (int i = 0; i < convertedSecond.Length; i++)
+            {
+                //print a character
+                Console.Write(convertedSecond[i]);
+                Thread.Sleep(millisecondsToWaitBeforePrintingNextCharacter);
+            }
         }
         //variable printer (prints out all game state variables as they currently are) THIS IS A DEBUG METHOD
         public static void variablePrinter()

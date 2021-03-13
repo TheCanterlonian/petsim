@@ -18,9 +18,9 @@ iconLarge.png - the large icon used by the GUI
 <br>
 iconSmall.ico - the small icon used by the GUI
 <br>
-init.xml - contains startup values for petsim
-<br>
 LICENSE - contains the license for petsim
+<br>
+petsimlines.txt - contains lines used by characters (no peeking!)
 <br>
 README.md - contains usage instructions (this file)
 <br>
