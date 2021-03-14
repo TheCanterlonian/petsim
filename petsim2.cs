@@ -62,9 +62,10 @@ namespace petsim2
             /*
             testing stuff, (change this for release,) put tests below here
             */
-            GameMenus.introSequence(); //test this when it's done
+            //GameMenus.introSequence(); //test this when it's done
             //petsimConsoleTools.ConsoleOutputGiving.dialoguePrinter(petsimGeneralTools.StaticReturns.stringReturn(1),50);
             //Console.WriteLine(petsimGeneralTools.StaticReturns.dialogueLibrary(12));
+            Console.WriteLine(petsimGeneralTools.StaticReturns.stringReturn(5));
             return;
         }
         
@@ -663,10 +664,10 @@ namespace petsimGeneralTools
             {
                 return("<profile>\n    <playerName>unknown</playerName>\n    <numberOfPets>0</numberOfPets>\n    <pronounSubjective>unknown</pronounSubjective>\n    <pronounObjective>unknown</pronounObjective>\n    <pronounPosessive>unknown</pronounPosessive>\n    <seenIntro>false</seenIntro>\n    <eros>false</eros>\n</profile>\n");
             }
-            //intro text (used for the first scene in the game)
+            //intro text (name grabbing strings)
             if (stringToReturn == 1)
             {
-                return("Identity Registration Process:\nPlease enter your name and pronouns at the respective prompts to continue.\nType your answer to the following questions at each prompt,\nthen hit the [ENTER] key or the [RETURN] key to confirm.");
+                return("Identity Registration Process:\nPlease enter your name to continue.\nType your answer at the prompt, then press the [ENTER] key or the [RETURN] key to confirm.");
             }
             if (stringToReturn == 2)
             {
@@ -676,9 +677,15 @@ namespace petsimGeneralTools
             {
                 return("Your current name is:");
             }
+            //intro text (general choice string)
             if (stringToReturn == 4)
             {
                 return("Do you wish to change it?");
+            }
+            //intro text (pronoun grabbing strings)
+            if (stringToReturn == 5)
+            {
+                return("Next is your pronouns, this is what a person will call you when they don't know your name.\nType your answers at the respective prompts and press [ENTER] or [RETURN] to confirm.");
             }
             //if set asked for doesn't exist
             else
@@ -880,6 +887,15 @@ namespace petsimConsoleTools
     //class for grabbing higher level inputs on the console
     public class ConsoleInputGrabbingHigh
     {
+        //pronouns handler
+        public static string[] pronounsGrabber()
+        {
+            //tell the user of the pronoun capturing
+            Console.WriteLine("\n" + petsimGeneralTools.StaticReturns.stringReturn(5));
+            //first do subjective pronoun
+            //second do objective pronoun
+            //last do posessive pronoun
+        }
         //user name handler
         public static string usernameGrabber()
         {
