@@ -60,10 +60,9 @@ namespace petsim2
             }
             //GameMenus.rootMenu(); //uncomment this on release
             /*
-            testing stuff, (change this for release,) put tests below here
+            testing stuff, (change this for release,) put tests below here (comment them out for release)
             */
-            GameMenus.introSequence("test.xml"); //test this when it's done
-            //petsimConsoleTools.ConsoleOutputGiving.dialoguePrinter(petsimGeneralTools.StaticReturns.stringReturn(1),50);
+            //petsimConsoleTools.ConsoleOutputGiving.dialoguePrinter(petsimGeneralTools.StaticReturns.stringReturn(1),50); //testing the printer speed
             return;
         }
         
@@ -305,6 +304,13 @@ namespace petsim2
     4. credits/about box (both console and gui readable)
     5. async stuff to run the game while the interface is open
     6. pay a Xamarin developer to make a GUI for me
+    There are more pressing matters of this moment though.
+    Stil need to make the following console implementations:
+    0. intro story content
+    1. profile display
+    2. info display
+    3. adoption system
+    4. pets interaction
     */
 }
 /*
