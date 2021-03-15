@@ -62,10 +62,8 @@ namespace petsim2
             /*
             testing stuff, (change this for release,) put tests below here
             */
-            //GameMenus.introSequence(); //test this when it's done
+            GameMenus.introSequence(); //test this when it's done
             //petsimConsoleTools.ConsoleOutputGiving.dialoguePrinter(petsimGeneralTools.StaticReturns.stringReturn(1),50);
-            //Console.WriteLine(petsimGeneralTools.StaticReturns.dialogueLibrary(12));
-            Console.WriteLine(petsimGeneralTools.StaticReturns.stringReturn(5));
             return;
         }
         
@@ -268,13 +266,16 @@ namespace petsim2
         //introductory sequence
         public static void introSequence()
         {
-            //ask the user for name and pronouns
-            Console.WriteLine(petsimGeneralTools.StaticReturns.stringReturn(1));
+            //play introductory scene
+            petsimConsoleTools.ConsoleOutputGiving.dialoguePrinter("\n" + "",false);
             //get the user's name
             string usernameToPlace = petsimConsoleTools.ConsoleInputGrabbingHigh.usernameGrabber();
             //set it to the current username
             petsimGeneralTools.GameStateTools.SetPlayerName(usernameToPlace);
             //get the user's pronouns
+            string[] pronounsToPlace = petsimConsoleTools.ConsoleInputGrabbingHigh.pronounsGrabber();
+            //split the array into individual variables
+            //set each to the current pronouns
             //save the game
         }
     }
@@ -667,7 +668,7 @@ namespace petsimGeneralTools
             //intro text (name grabbing strings)
             if (stringToReturn == 1)
             {
-                return("First is your name, it can be anything you want it to be.\nPlease enter your name to continue.\nType your answer at the prompt, then press the [ENTER] key or the [RETURN] key to confirm.");
+                return("First is your name, it can be anything you want it to be.");
             }
             if (stringToReturn == 2)
             {
@@ -685,11 +686,11 @@ namespace petsimGeneralTools
             //intro text (pronoun grabbing strings)
             if (stringToReturn == 5)
             {
-                return("Next is your pronouns, this is what a person will call you when they don't know your name.\nThere are 5 (five) kinds of pronouns: subjective, objective, posessive adjective, posessive pronoun, and reflexive pronouns.\nThe use of \"is\" or \"are\" will be chosen based on the existence of the subjective \"they\" pronoun.\nType your answers at the respective prompts and press [ENTER] or [RETURN] to confirm.");
+                return("Next is your pronouns, this is what a person will call you when they don't know your name.\nThere are 5 (five) kinds of pronouns: subjective, objective, posessive adjective, posessive pronoun, and reflexive pronouns.");
             }
             if (stringToReturn == 6)
             {
-                return("First is your subjective pronoun.\nThis pronoun is used to refer to you when you are the subject of a verb.\nThis pronoun will determine whether \"are\" or \"is\" will be used.\nExamples:\n\"SHE drank water yesterday.\nTHEY are drinking water now.\nHE will drink water tomorrow.");
+                return("First is your subjective pronoun.\nThis pronoun will determine whether \"are\" or \"is\" will be used.\nExamples:\n\"SHE is drinking water.\nTHEY are drinking water.");
             }
             if (stringToReturn == 7)
             {
@@ -697,7 +698,7 @@ namespace petsimGeneralTools
             }
             if (stringToReturn == 8)
             {
-                return("Second is your objective pronoun.\nThis pronoun is used to refer to you when you are the object of a sentence.\nExamples:\n\"We are asking HER for water.\nWe will ask THEM for water.\nWe asked HIM for water.");
+                return("Second is your objective pronoun.\nExamples:\n\"We are asking HER for water.\nWe will ask THEM for water.");
             }
             if (stringToReturn == 9)
             {
@@ -705,7 +706,7 @@ namespace petsimGeneralTools
             }
             if (stringToReturn == 10)
             {
-                return("Third is your posessive adjective.\nThis pronoun is used to refer to you when you are the owner of an object that IS mentioned in the rest of the sentence.\nExamples:\n\"This will be HER water.\nThis was THEIR water.\nThis is HIS water.");
+                return("Third is your posessive adjective.\nExamples:\n\"This will be HER water.\nThis was THEIR water.");
             }
             if (stringToReturn == 11)
             {
@@ -713,7 +714,7 @@ namespace petsimGeneralTools
             }
             if (stringToReturn == 12)
             {
-                return("Fourth is your posessive pronoun.\nThis pronoun is used to refer to you when you are the owner of an object that is NOT mentioned in the rest of the sentence.\nExamples:\n\"This water was HERS.\nThis water is THEIRS.\nThis water will be HIS.");
+                return("Fourth is your posessive pronoun.\nExamples:\n\"This water was HERS.\nThis water is THEIRS.");
             }
             if (stringToReturn == 13)
             {
@@ -721,7 +722,7 @@ namespace petsimGeneralTools
             }
             if (stringToReturn == 14)
             {
-                return("Lastly is your reflexive pronoun.\nThis pronoun is used to refer to you the second time you are mentioned when you are both the sunject AND object of the sentence.\nExamples:\n\"She is giving HERSELF water.\nThey will be giving THEMSELF water.\nHe gave HIMSELF water.");
+                return("Lastly is your reflexive pronoun.\nExamples:\n\"She is giving HERSELF water.\nThey will be giving THEMSELF water.");
             }
             if (stringToReturn == 15)
             {
@@ -893,13 +894,13 @@ namespace petsimConsoleTools
                 if(superslow)
                 {
                     //super slow text speed
-                    Thread.Sleep(100);
+                    Thread.Sleep(40);
                 }
                 //otherwise
                 else
                 {
                     //normal slow text speed
-                    Thread.Sleep(50);
+                    Thread.Sleep(20);
                 }
             }
         }
@@ -943,36 +944,30 @@ namespace petsimConsoleTools
             while(true)
             {
                 //tell the user of the pronoun capturing
-                Console.WriteLine("\n" + petsimGeneralTools.StaticReturns.stringReturn(5));
+                ConsoleOutputGiving.dialoguePrinter("\n" + petsimGeneralTools.StaticReturns.stringReturn(5),false);
                 //first do subjective pronoun
-                Console.WriteLine(petsimGeneralTools.StaticReturns.stringReturn(6));
+                ConsoleOutputGiving.dialoguePrinter("\n" + petsimGeneralTools.StaticReturns.stringReturn(6),false);
                 Console.Write("\n" + petsimGeneralTools.StaticReturns.stringReturn(7));
                 string firstP = petsimConsoleTools.ConsoleInputGrabbingLow.stringInputGetter(true, true);
-                Console.Write("\n");
                 //second do objective pronoun
-                Console.WriteLine(petsimGeneralTools.StaticReturns.stringReturn(8));
+                ConsoleOutputGiving.dialoguePrinter(petsimGeneralTools.StaticReturns.stringReturn(8),false);
                 Console.Write("\n" + petsimGeneralTools.StaticReturns.stringReturn(9));
                 string secondP = petsimConsoleTools.ConsoleInputGrabbingLow.stringInputGetter(true, true);
-                Console.Write("\n");
                 //third do posessive adjective
-                Console.WriteLine(petsimGeneralTools.StaticReturns.stringReturn(10));
+                ConsoleOutputGiving.dialoguePrinter(petsimGeneralTools.StaticReturns.stringReturn(10),false);
                 Console.Write("\n" + petsimGeneralTools.StaticReturns.stringReturn(11));
                 string thirdP = petsimConsoleTools.ConsoleInputGrabbingLow.stringInputGetter(true, true);
-                Console.Write("\n");
                 //fourth do posessive pronoun
-                Console.WriteLine(petsimGeneralTools.StaticReturns.stringReturn(12));
+                ConsoleOutputGiving.dialoguePrinter(petsimGeneralTools.StaticReturns.stringReturn(12),false);
                 Console.Write("\n" + petsimGeneralTools.StaticReturns.stringReturn(13));
                 string fourthP = petsimConsoleTools.ConsoleInputGrabbingLow.stringInputGetter(true, true);
-                Console.Write("\n");
                 //last do reflexive pronoun
-                Console.WriteLine(petsimGeneralTools.StaticReturns.stringReturn(14));
+                ConsoleOutputGiving.dialoguePrinter(petsimGeneralTools.StaticReturns.stringReturn(14),false);
                 Console.Write("\n" + petsimGeneralTools.StaticReturns.stringReturn(15));
                 string fifthP = petsimConsoleTools.ConsoleInputGrabbingLow.stringInputGetter(true, true);
-                Console.Write("\n");
                 //check if the user is sure
-                Console.WriteLine("");
-                Console.WriteLine("\n" + petsimGeneralTools.StaticReturns.stringReturn(16) + " " + firstP + "/" + secondP + "/" + thirdP + "/" + fourthP + "/" + fifthP + "\n");
-                Console.WriteLine(petsimGeneralTools.StaticReturns.stringReturn(4));
+                ConsoleOutputGiving.dialoguePrinter((petsimGeneralTools.StaticReturns.stringReturn(16) + " " + firstP + "/" + secondP + "/" + thirdP + "/" + fourthP + "/" + fifthP + "\n"),false);
+                Console.Write(petsimGeneralTools.StaticReturns.stringReturn(4));
                 bool changeMindP = ConsoleInputGrabbingLow.answerHandlerYesOrNo();
                 //if they like their decision
                 if (!(changeMindP))
@@ -990,14 +985,15 @@ namespace petsimConsoleTools
             //loop to make sure it's done correctly
             while(true)
             {
+                //tell the user to enter their information
+                ConsoleOutputGiving.dialoguePrinter(("\n" + petsimGeneralTools.StaticReturns.stringReturn(1)),false);
                 //ask user for name
                 Console.Write("\n" + petsimGeneralTools.StaticReturns.stringReturn(2) + " ");
                 //take the name in
                 string userNameToAssign = petsimConsoleTools.ConsoleInputGrabbingLow.stringInputGetter(true, false);
                 //check if the user is sure of their name
-                Console.WriteLine("");
-                Console.WriteLine("\n" + petsimGeneralTools.StaticReturns.stringReturn(3) + " " + userNameToAssign + "\n");
-                Console.WriteLine(petsimGeneralTools.StaticReturns.stringReturn(4));
+                ConsoleOutputGiving.dialoguePrinter((petsimGeneralTools.StaticReturns.stringReturn(3) + " " + userNameToAssign),false);
+                Console.Write("\n" + petsimGeneralTools.StaticReturns.stringReturn(4));
                 bool changeMind = ConsoleInputGrabbingLow.answerHandlerYesOrNo();
                 //if they like their decision
                 if (!(changeMind))
