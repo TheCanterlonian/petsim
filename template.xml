@@ -3,6 +3,7 @@
     <numberOfPets>0</numberOfPets>
     <pronounSubjective>unknown</pronounSubjective>
     <pronounObjective>unknown</pronounObjective>
+    <adjectivePosessive>unknown</adjectivePosessive>
     <pronounPosessive>unknown</pronounPosessive>
     <seenIntro>false</seenIntro>
     <eros>false</eros>

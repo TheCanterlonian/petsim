@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 <profile>
-    <playerName>unknown</playerName>
+    <playerName>Tiffany</playerName>
     <numberOfPets>0</numberOfPets>
-    <pronounSubjective>unknown</pronounSubjective>
-    <pronounObjective>unknown</pronounObjective>
-    <adjectivePosessive>unknown</adjectivePosessive>
-    <pronounPosessive>unknown</pronounPosessive>
-    <seenIntro>false</seenIntro>
+    <pronounSubjective>she</pronounSubjective>
+    <pronounObjective>her</pronounObjective>
+    <adjectivePosessive>her</adjectivePosessive>
+    <pronounPosessive>hers</pronounPosessive>
+    <seenIntro>true</seenIntro>
     <eros>false</eros>
 </profile>

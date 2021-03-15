@@ -62,7 +62,7 @@ namespace petsim2
             /*
             testing stuff, (change this for release,) put tests below here
             */
-            GameMenus.introSequence(); //test this when it's done
+            GameMenus.introSequence("test.xml"); //test this when it's done
             //petsimConsoleTools.ConsoleOutputGiving.dialoguePrinter(petsimGeneralTools.StaticReturns.stringReturn(1),50);
             return;
         }
@@ -126,7 +126,7 @@ namespace petsim2
                             if (!(petsimGeneralTools.GameStateTools.GetSeenIntro()))
                             {
                                 //start the intro sequence
-                                introSequence();
+                                introSequence(fileThatWillBeLoaded);
                                 //start the game manager menu
                                 managerMenu(fileThatWillBeLoaded);
                             }
@@ -264,7 +264,7 @@ namespace petsim2
             }
         }
         //introductory sequence
-        public static void introSequence()
+        public static void introSequence(string filLoaded)
         {
             //play introductory scene
             petsimConsoleTools.ConsoleOutputGiving.dialoguePrinter("\n" + "",false);
@@ -275,8 +275,24 @@ namespace petsim2
             //get the user's pronouns
             string[] pronounsToPlace = petsimConsoleTools.ConsoleInputGrabbingHigh.pronounsGrabber();
             //split the array into individual variables
+            string p1 = pronounsToPlace[0];
+            string p2 = pronounsToPlace[1];
+            string p3 = pronounsToPlace[2];
+            string p4 = pronounsToPlace[3];
             //set each to the current pronouns
+            petsimGeneralTools.GameStateTools.SetPronounSubjective(p1);
+            petsimGeneralTools.GameStateTools.SetPronounObjective(p2);
+            petsimGeneralTools.GameStateTools.SetAdjectivePosessive(p3);
+            petsimGeneralTools.GameStateTools.SetPronounPosessive(p4);
+            //tell the user they are saving the game
+            Console.WriteLine("Saving data...");
+            //set the intro to never play again on this save file
+            petsimGeneralTools.GameStateTools.SetSeenIntro(true);
             //save the game
+            petsimGeneralTools.FilesystemEditingAndAltering.gameSaver(filLoaded);
+            //tell user it's done
+            Console.WriteLine("Done.");
+            //play introductory conclusion
         }
     }
     /*
@@ -304,6 +320,7 @@ namespace petsimGeneralTools
         private static int _numberOfPets = 0;
         private static string _pronounSubjective = "unknown";
         private static string _pronounObjective = "unknown";
+        private static string _AdjectivePosessive = "unknown";
         private static string _pronounPosessive = "unknown";
         private static bool _seenIntro = false;
         private static bool _eros = false;
@@ -345,6 +362,7 @@ namespace petsimGeneralTools
                 int numberOfPets = 0;
                 string pronounSubjective = "unknown";
                 string pronounObjective = "unknown";
+                string adjectivPosessive = "unknown";
                 string pronounPosessive = "unknown";
                 bool seenIntro = false;
                 bool eros = false;
@@ -363,6 +381,8 @@ namespace petsimGeneralTools
                     pronounSubjective = reader.ReadElementContentAsString();
                     reader.ReadToFollowing("pronounObjective");
                     pronounObjective = reader.ReadElementContentAsString();
+                    reader.ReadToFollowing("adjectivePosessive");
+                    adjectivPosessive = reader.ReadElementContentAsString();
                     reader.ReadToFollowing("pronounPosessive");
                     pronounPosessive = reader.ReadElementContentAsString();
                     //load save state booleans
@@ -384,6 +404,7 @@ namespace petsimGeneralTools
                 _numberOfPets = numberOfPets;
                 _pronounSubjective = pronounSubjective;
                 _pronounObjective = pronounObjective;
+                _AdjectivePosessive = adjectivPosessive;
                 _pronounPosessive = pronounPosessive;
                 _seenIntro = seenIntro;
                 _eros = eros;
@@ -407,6 +428,10 @@ namespace petsimGeneralTools
         public static string GetPronounObjective()
         {
             return _pronounObjective;
+        }
+        public static string GetAdjectivePosessive()
+        {
+            return _AdjectivePosessive;
         }
         public static string GetPronounPosessive()
         {
@@ -436,6 +461,10 @@ namespace petsimGeneralTools
         public static void SetPronounObjective(string op)
         {
             _pronounObjective = op;
+        }
+        public static void SetAdjectivePosessive(string adjPos)
+        {
+            _AdjectivePosessive = adjPos;
         }
         public static void SetPronounPosessive(string pp)
         {
@@ -526,6 +555,7 @@ namespace petsimGeneralTools
             int currentNumberOfPets = GameStateTools.GetNumberOfPets();
             string cps = GameStateTools.GetPronounSubjective();
             string cpo = GameStateTools.GetPronounObjective();
+            string adjec = GameStateTools.GetAdjectivePosessive();
             string cpp = GameStateTools.GetPronounPosessive();
             bool introSeenStatus = GameStateTools.GetSeenIntro();
             bool erostatus = GameStateTools.GetEros();
@@ -562,6 +592,9 @@ namespace petsimGeneralTools
                         textWriter.WriteEndElement();
                         textWriter.WriteStartElement("pronounObjective");
                             textWriter.WriteString(cpo);
+                        textWriter.WriteEndElement();
+                        textWriter.WriteStartElement("adjectivePosessive");
+                            textWriter.WriteString(adjec);
                         textWriter.WriteEndElement();
                         textWriter.WriteStartElement("pronounPosessive");
                             textWriter.WriteString(cpp);
@@ -663,7 +696,7 @@ namespace petsimGeneralTools
             //data for creating a new profile (used in creating the template file as well)
             if (stringToReturn == 0)
             {
-                return("<profile>\n    <playerName>unknown</playerName>\n    <numberOfPets>0</numberOfPets>\n    <pronounSubjective>unknown</pronounSubjective>\n    <pronounObjective>unknown</pronounObjective>\n    <pronounPosessive>unknown</pronounPosessive>\n    <seenIntro>false</seenIntro>\n    <eros>false</eros>\n</profile>\n");
+                return("<profile>\n    <playerName>unknown</playerName>\n    <numberOfPets>0</numberOfPets>\n    <pronounSubjective>unknown</pronounSubjective>\n    <pronounObjective>unknown</pronounObjective>\n    <adjectivePosessive>unknown</adjectivePosessive>\n    <pronounPosessive>unknown</pronounPosessive>\n    <seenIntro>false</seenIntro>\n    <eros>false</eros>\n</profile>\n");
             }
             //intro text (name grabbing strings)
             if (stringToReturn == 1)
@@ -698,7 +731,7 @@ namespace petsimGeneralTools
             }
             if (stringToReturn == 8)
             {
-                return("Second is your objective pronoun.\nExamples:\n\"We are asking HER for water.\nWe will ask THEM for water.");
+                return("Second is your objective pronoun.\nThis pronoun will determine the reflexive pronoun.\nExamples:\n\"We are asking HER for water.\nWe will ask THEM for water.");
             }
             if (stringToReturn == 9)
             {
@@ -714,19 +747,11 @@ namespace petsimGeneralTools
             }
             if (stringToReturn == 12)
             {
-                return("Fourth is your posessive pronoun.\nExamples:\n\"This water was HERS.\nThis water is THEIRS.");
+                return("Lastly is your posessive pronoun.\nExamples:\n\"This water was HERS.\nThis water is THEIRS.");
             }
             if (stringToReturn == 13)
             {
                 return("Please enter your posessive pronoun:");
-            }
-            if (stringToReturn == 14)
-            {
-                return("Lastly is your reflexive pronoun.\nExamples:\n\"She is giving HERSELF water.\nThey will be giving THEMSELF water.");
-            }
-            if (stringToReturn == 15)
-            {
-                return("Please enter your reflexive pronoun:");
             }
             if (stringToReturn == 16)
             {
@@ -737,6 +762,7 @@ namespace petsimGeneralTools
             {
                 return("story intro content here");
             }
+            //unused numbers: 14, 15,
             //if set asked for doesn't exist
             else
             {
@@ -755,7 +781,7 @@ namespace petsimGeneralTools
             string[] mainMenuArray = {"petsim menu", "1. start gui", "2. start cli", "3. quit"}; //1
             string[] CLImenuArray = {"petsim command line interface", "1. load save file", "2. create save file", "3. delete save file", "4. list files in working directory", "5. go back to previous menu"};//2
             string[] managerMenuArray = {"petsim manager", "1. Pets", "2. Adoption", "3. Information", "4. Profile", "5. Save Game", "6. Exit Game"}; //3
-            string[] characterNames = {"Aloe"}; //4
+            string[] characterNames = {"Director","Aloe"}; //4
             //array returns
             if (arrayToReturn == 0)
             {
@@ -791,6 +817,11 @@ namespace petsimGeneralTools
             /*
             //player lines
             if(characterSpeaking == "player")
+            {
+                //
+            }
+            //Director lines
+            if(characterSpeaking == "Director")
             {
                 //
             }
@@ -961,19 +992,15 @@ namespace petsimConsoleTools
                 ConsoleOutputGiving.dialoguePrinter(petsimGeneralTools.StaticReturns.stringReturn(12),false);
                 Console.Write("\n" + petsimGeneralTools.StaticReturns.stringReturn(13));
                 string fourthP = petsimConsoleTools.ConsoleInputGrabbingLow.stringInputGetter(true, true);
-                //last do reflexive pronoun
-                ConsoleOutputGiving.dialoguePrinter(petsimGeneralTools.StaticReturns.stringReturn(14),false);
-                Console.Write("\n" + petsimGeneralTools.StaticReturns.stringReturn(15));
-                string fifthP = petsimConsoleTools.ConsoleInputGrabbingLow.stringInputGetter(true, true);
                 //check if the user is sure
-                ConsoleOutputGiving.dialoguePrinter((petsimGeneralTools.StaticReturns.stringReturn(16) + " " + firstP + "/" + secondP + "/" + thirdP + "/" + fourthP + "/" + fifthP + "\n"),false);
+                ConsoleOutputGiving.dialoguePrinter((petsimGeneralTools.StaticReturns.stringReturn(16) + " " + firstP + "/" + secondP + "/" + thirdP + "/" + fourthP + "/" + secondP + "self\n"),false);
                 Console.Write(petsimGeneralTools.StaticReturns.stringReturn(4));
                 bool changeMindP = ConsoleInputGrabbingLow.answerHandlerYesOrNo();
                 //if they like their decision
                 if (!(changeMindP))
                 {
                     //combine the answers into an array
-                    string[] combinedAnswersP = {firstP,secondP,thirdP,fourthP,fifthP};
+                    string[] combinedAnswersP = {firstP,secondP,thirdP,fourthP};
                     //return it
                     return combinedAnswersP;
                 }
