@@ -311,6 +311,7 @@ namespace petsim2
     2. info display
     3. adoption system
     4. pets interaction
+    5. make pets react to pronoun changes, mostly supportively (and be super supportive if they change a second time)
     */
 }
 /*
