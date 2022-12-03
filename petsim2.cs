@@ -888,13 +888,11 @@ namespace petsimConsoleTools
         //menu creator
         public static void menuCreator(string[] linesForMenu)
         {
-            /*
-            this method uses element zero of the input as the menu title.
-            it assumes element 0 and 1 are always used.
-            try to fix this later since this is a very very very very very very very very very very BAD IDEA!!!!!!!!!!!!
-            can't be fucked at the moment though... (famous last words)
-            tbh the check is simple, just check the number of elements that are not null...
-            */
+            if (linesForMenu.Length < 2)
+            {
+                Console.WriteLine("Invalid Menu Configuration");
+                return;
+            }
             //for the length of the first element
             for (int i = 0; i < linesForMenu[0].Length; i++)
             {
